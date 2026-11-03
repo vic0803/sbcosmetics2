@@ -1,0 +1,17 @@
+{
+  "name": "sbcosmetics2",
+  "version": "1.0.0",
+  "description": "> Active working copy (`sbcosmetics2`). The original `sbcosmetics` is kept untouched as a stable base/backup. New images and ideas go here.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "three": "^0.187.0",
+    "ws": "^8.22.1"
+  }
+}

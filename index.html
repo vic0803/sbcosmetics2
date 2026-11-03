@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ua">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sophie Bilynska — Botanical Skincare</title>
+  <meta name="description" content="Преміальна ботанічна косметика ручної роботи. Чисті екстракти, прозорий склад, догляд малими партіями." />  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/barrier.css" />
+</head>
+<body class="barrier">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
+      <div class="header-right">
+        <div class="lang">
+          <button data-lang="ua">UA</button>
+          <button data-lang="en">EN</button>
+        </div>
+        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Flyout menu -->
+  <div class="menu-overlay"></div>
+  <nav class="mobile-menu" aria-label="Main menu">
+    <button class="menu-close" aria-label="Close">&times;</button>
+    <div class="menu-links">
+      <a href="brand.html" data-i18n="nav.about">Бренд</a>
+      <div class="menu-group">
+        <a href="catalog.html" class="menu-group-head" data-i18n="nav.catalog">Каталог</a>
+        <div class="submenu">
+          <a href="catalog.html" data-i18n="cat.face">Обличчя</a>
+          <a href="catalog.html" data-i18n="cat.body">Тіло</a>
+          <a href="catalog.html" data-i18n="cat.hair">Волосся</a>
+          <a href="catalog.html" data-i18n="nav.bundles">Набори</a>
+        </div>
+      </div>
+      <a href="contacts.html" data-i18n="nav.contacts">Контакти</a>
+      <a href="catalog.html" class="menu-cart"><svg class="cart-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg> <span data-i18n="menu.cart">Кошик</span> <span class="cart-count">0</span></a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO (split: text left · full-height video right) ============ -->
+  <!-- data-hold-video: pins the page until the hero clip finishes, then releases scroll. -->
+  <section class="b-hero b-hero--split b-intro" data-hold-video>
+    <!-- Top-left corner: typewriter lines (same font as the lang switcher). -->
+    <div class="b-hero-aside" aria-hidden="true">
+      <p class="b-type" data-type data-i18n="b.heroSub">Чисті рослинні активи. Прозорий склад. Малі свіжі партії.</p>
+      <p class="b-type b-type--muted" data-type data-i18n="b.heroNote">Ваша шкіра не потребує більше засобів. Вона потребує чистіших формул.</p>
+    </div>
+
+    <!-- Left: brand text beside the video (no overlap). -->
+    <div class="b-hero-fx">
+      <p class="b-brandsub i-haze" style="--i:1" data-i18n="b.handmade">Косметика ручної роботи</p>
+      <h1 class="b-hero-title">
+        <span class="i-haze" style="--i:2" data-i18n="b.heroTitle1">Рослинна сила</span>
+        <span class="i-haze" style="--i:3" data-i18n="b.heroTitle2">догляду</span>
+      </h1>
+    </div>
+
+    <!-- Right: full-height product video (serum bottle + dragonfly). -->
+    <div class="b-hero-video i-haze" style="--i:0">
+      <video class="b-hero-bloom" aria-hidden="true"
+             autoplay muted loop playsinline preload="auto"
+             poster="assets/hero/ice-bloom-poster.jpg">
+        <source src="assets/hero/ice-bloom.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="b-scroll i-haze" style="--i:4" data-i18n="b.scroll">Прокрутіть нижче</div>
+  </section>
+
+  <!-- ============ THE PROBLEM ============ -->
+  <section class="b-sec">
+    <div class="b-kicker reveal">
+      <span data-i18n="b.p1k1">Проблема</span>
+      <span data-i18n="b.p1k2">Агресивні формули</span>
+      <span data-i18n="b.p1k3">Порушений бар'єр</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="b.p1lead">Справа не у вашій шкірі. Справа у складі.</h2>
+    <div class="b-grid2 reveal" data-delay="2">
+      <p class="b-col" data-i18n="b.p1a">Більшість засобів перевантажені силіконами, сульфатами та синтетичними ароматизаторами. Вони дають миттєвий ефект, але з часом виснажують захисний бар'єр шкіри.</p>
+      <p class="b-col" data-i18n="b.p1b">Роками індустрія радила додавати ще один крем, ще одну сироватку. Ми пропонуємо протилежне — прибрати зайве й залишити тільки те, що працює.</p>
+    </div>
+  </section>
+
+  <!-- ============ STATEMENT (dark) ============ -->
+  <section class="b-sec b-sec--dark">
+    <p class="b-kicker reveal" style="color:#ffffff99"><span data-i18n="b.p2k">Філософія</span></p>
+    <h2 class="b-statement reveal" data-delay="1">Less,<br>but purer.</h2>
+    <div class="b-grid2 offset reveal" data-delay="2" style="margin-top:clamp(40px,8vw,90px)">
+      <p class="b-col" data-i18n="b.p2a">Кожна формула — це холодне пресування, чисті екстракти та повний INCI на етикетці. Жодних «секретних компонентів».</p>
+      <p class="b-col" data-i18n="b.p2b">Ми працюємо малими партіями, щоб активи залишались свіжими, а склад — чесним. Гіпоалергенно та cruelty-free.</p>
+    </div>
+  </section>
+
+  <!-- ============ INGREDIENTS ============ -->
+  <section class="b-sec">
+    <div class="b-kicker reveal">
+      <span data-i18n="b.p3k1">Активи</span>
+      <span data-i18n="b.p3k2">Прозорий склад</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="b.p3lead">Те, що всередині — і навіщо.</h2>
+    <div class="b-grid2 reveal">
+      <p class="b-col" data-i18n="b.p3a">Гіалуронова кислота та алое вера (CO₂) — глибоке зволоження й заспокоєння. Вітамін E та D-пантенол відновлюють і зміцнюють бар'єр.</p>
+      <p class="b-col" data-i18n="b.p3b">Олії мигдалю й виноградних кісточок, зелений чай та гідролізат протеїнів пшениці живлять шкіру без обтяження.</p>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT INDEX ============ -->
+  <section class="b-sec">
+    <div class="b-kicker reveal">
+      <span data-i18n="b.p4k1">Колекція</span>
+      <span data-i18n="b.p4k2">Бестселери</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="b.p4lead">Ритуал починається тут.</h2>
+    <div id="home-bestsellers-grid" class="reveal" data-delay="2"></div>
+  </section>
+
+  <!-- ============ STORY / FOUNDER (dark) ============ -->
+  <section class="b-sec b-sec--dark">
+    <div class="b-kicker reveal" style="color:#ffffff99">
+      <span data-i18n="story.eyebrow">Історія бренду</span>
+      <span data-i18n="story.tag">Ручна робота · Малі партії</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="story.title">Народжено з любові до деталей.</h2>
+    <div class="b-grid2 offset reveal" data-delay="2">
+      <p class="b-col" data-i18n="story.p1">Усе почалося на домашній кухні — з перших брусків мила, зварених вручну для рідних. Сьогодні це преміальна косметика малими партіями, у якій збережено ту саму турботу.</p>
+      <p class="b-col" data-i18n="story.p2">Кожен рецепт — це баланс натуральних інгредієнтів, прозорого складу та естетики, яку хочеться тримати в руках.</p>
+    </div>
+    <div class="b-stats reveal" data-delay="2">
+      <div class="b-stat"><span class="b-stat-num">8+</span><span class="b-stat-lbl" data-i18n="story.stat1">років ручної роботи</span></div>
+      <div class="b-stat"><span class="b-stat-num">100%</span><span class="b-stat-lbl" data-i18n="story.stat2">натуральний склад</span></div>
+      <div class="b-stat"><span class="b-stat-num">40+</span><span class="b-stat-lbl" data-i18n="story.stat3">авторських рецептів</span></div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section class="b-sec">
+    <div class="b-kicker reveal">
+      <span data-i18n="rev.kicker">Відгуки</span>
+      <span data-i18n="rev.verified">✓ Перевірені покупці</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="b.revTitle">Що про нас кажуть.</h2>
+    <div class="b-reviews reveal" data-delay="2">
+      <figure class="b-review">
+        <blockquote data-i18n="rev.r1">«Гель-сироватка для обличчя стала моїм порятунком! Шкіра після неї буквально світиться зсередини, жодної липкості, макіяж лягає ідеально.»</blockquote>
+        <figcaption>Оксана Д. — <span data-i18n="b.city1">Київ</span></figcaption>
+      </figure>
+      <figure class="b-review">
+        <blockquote data-i18n="rev.r2">«Мило “Флора” — справжній витвір мистецтва. А пінка настільки ніжна, що вперше в житті після вмивання немає стягнутості.»</blockquote>
+        <figcaption>Марія С. — <span data-i18n="b.city2">Львів</span></figcaption>
+      </figure>
+      <figure class="b-review">
+        <blockquote data-i18n="rev.r3">«Крем навколо очей прибрав мої постійні ранкові набряки за тиждень. Дуже вдячна за такий чистий склад.»</blockquote>
+        <figcaption>Наталія К. — <span data-i18n="b.city3">Одеса</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="b-sec">
+    <div class="b-kicker reveal">
+      <span data-i18n="faq.kicker">Питання</span>
+    </div>
+    <h2 class="b-lead reveal" data-delay="1" data-i18n="faq.title">Часті запитання.</h2>
+    <div class="b-faq reveal" data-delay="2">
+      <div class="faq-item b-faq-item open">
+        <button class="faq-head b-faq-head" type="button"><span data-i18n="faq.q1">Чи підходить ваша косметика для дітей та вагітних?</span><span class="faq-sign b-faq-sign">+</span></button>
+        <div class="faq-body b-faq-body"><p data-i18n="faq.a1">Так. Усі формули створюються з фокусом на гіпоалергенність — без штучних віддушок, парабенів, агресивних сульфатів та синтетичних барвників. Більшість засобів безпечні навіть для немовлят.</p></div>
+      </div>
+      <div class="faq-item b-faq-item">
+        <button class="faq-head b-faq-head" type="button"><span data-i18n="faq.q2">Скільки зберігається натуральна косметика ручної роботи?</span><span class="faq-sign b-faq-sign">+</span></button>
+        <div class="faq-body b-faq-body"><p data-i18n="faq.a2">Завдяки натуральним антиоксидантам та безпечним еко-консервантам засоби зберігаються 9–24 місяці у закритому вигляді та 3–6 місяців після відкриття.</p></div>
+      </div>
+      <div class="faq-item b-faq-item">
+        <button class="faq-head b-faq-head" type="button"><span data-i18n="faq.q3">Як швидко відправляється замовлення?</span><span class="faq-sign b-faq-sign">+</span></button>
+        <div class="faq-body b-faq-body"><p data-i18n="faq.a3">Відправка Новою Поштою — протягом 1–2 робочих днів після підтвердження замовлення.</p></div>
+      </div>
+      <div class="faq-item b-faq-item">
+        <button class="faq-head b-faq-head" type="button"><span data-i18n="faq.q4">Чи тестується косметика на тваринах?</span><span class="faq-sign b-faq-sign">+</span></button>
+        <div class="faq-body b-faq-body"><p data-i18n="faq.a4">Ніколи. Ми категорично проти тестування на тваринах (Cruelty-Free). Формули перевіряються дерматологічно.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="b-final">
+    <p class="b-eyebrow" style="color:#ffffff99" data-i18n="b.ctaEyebrow">Ботанічний догляд · Ручна робота</p>
+    <h2 class="b-cta-title">Your routine<br>starts here.</h2>
+    <a href="catalog.html" class="b-link" data-i18n="b.ctaShop">Переглянути каталог</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-bottom">
+      © 2026 Sophie Bilynska Cosmetics — <span data-i18n="foot.rights">Усі права захищено.</span>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/barrier-fx.js"></script>
+</body>
+</html>

@@ -1,0 +1,1087 @@
+/* ============================================================
+   Sophie Bilyńska — "Barrier+" editorial redesign (home)
+   Inspired by cosmetics-web-nu.vercel.app:
+   - Urbanist, everything uppercase, wide tracking
+   - Monochrome: paper white -> charcoal ink, no accent colour
+   - Huge fluid display type, generous whitespace
+   - Full-viewport editorial sections, scroll reveals
+   This file loads AFTER style.css and overrides the homepage look.
+   ============================================================ */
+
+:root {
+  --paper: #ffffff;
+  --paper-2: #f3f2f1;
+  --paper-3: #e9e8e7;
+  --ink: #2d3031;
+  --ink-soft: #33434980;
+  --line-b: #dbdad9;
+
+  /* Brand typeface: Futura PT (local, licensed — see @font-face in style.css). */
+  --font-b: "Futura PT", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --fs-tiny: 13px;
+  --fs-label: clamp(11px, 1.2vw, 14px);
+  --fs-body: clamp(15px, 1.1vw, 17px);
+  --fs-tagline: clamp(22px, 4.4vw, 56px);
+  --fs-headline: clamp(24px, 2.7vw, 40px);
+  --fs-display: clamp(44px, 9.6vw, 150px);
+  --fs-mega: clamp(60px, 13vw, 200px);
+
+  --pad-x: clamp(20px, 5vw, 90px);
+}
+
+/* ---- Reset the dark theme on the home document ---- */
+body.barrier {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-b);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  /* No text selection anywhere on the site. */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+/* Keep form fields usable (user can still type/select inside inputs). */
+body.barrier input,
+body.barrier textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  user-select: text;
+}
+
+/* Force Urbanist everywhere on barrier pages — the old style.css sets
+   --font-display: "Futura PT", which some elements (e.g. .b-hero-title,
+   .b-hero-sub) were inheriting. This guarantees one consistent typeface. */
+body.barrier,
+body.barrier * {
+  font-family: var(--font-b) !important;
+}
+/* ...but let icon fonts / emoji keep their own glyphs. */
+body.barrier .cart-ic,
+body.barrier svg { font-family: inherit; }
+body.barrier ::selection { background: var(--ink); color: var(--paper); }
+
+/* Kill the old dark header/menu/footer chrome styling on this page only */
+body.barrier .header,
+body.barrier .footer,
+body.barrier .mobile-menu {
+  background: transparent;
+}
+
+/* ======================= HEADER ======================= */
+body.barrier .header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 60;
+  padding: 16px var(--pad-x);
+  background: transparent;
+  border: 0;
+  transition: padding .4s ease, background .4s ease, backdrop-filter .4s ease;
+}
+/* Transparent (top of page): no line, no shadow. */
+body.barrier .header { box-shadow: none; }
+/* Condensed on scroll: a soft paper veil so content scrolls under cleanly.
+   No border line, no shadow — keep it flat and in-style. */
+body.barrier .header.condensed {
+  padding: 10px var(--pad-x);
+  background: rgba(255,255,255,.72);
+  backdrop-filter: saturate(1.1) blur(10px);
+  -webkit-backdrop-filter: saturate(1.1) blur(10px);
+  border-bottom: 0;
+  box-shadow: none;
+}
+body.barrier .header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: none; width: 100%;
+}
+/* Text logo — fixed size (does not shrink on scroll). */
+body.barrier .b-logo { display: inline-flex; align-items: center; text-decoration: none; }
+body.barrier .b-logo-text {
+  position: relative;
+  font-family: var(--font-b);
+  font-size: clamp(19px, 2.1vw, 25px);   /* fixed = the old "condensed" size */
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1;
+  white-space: nowrap;
+  transition: color .35s ease;
+}
+/* At the very top (no scroll yet) the logo is inert: not clickable. */
+body.barrier .b-logo.is-inert { pointer-events: none; }
+/* Hover: only a hairline underline draws in from the left (letters stay put). */
+body.barrier .b-logo-text::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: left;
+  transition: transform .5s cubic-bezier(.76,0,.24,1);
+}
+body.barrier .b-logo:not(.is-inert):hover .b-logo-text::after { transform: scaleX(1); }
+
+body.barrier .header-right { gap: 20px; display: flex; align-items: center; }
+/* Language switcher — flat, monochrome, in-site style. No box, no shadow,
+   no gold, no divider line. Active = solid ink; inactive = muted. */
+body.barrier .lang { display: inline-flex; align-items: center; gap: 10px; }
+body.barrier .lang button {
+  color: var(--ink) !important; background: none !important; border: 0 !important;
+  box-shadow: none !important; cursor: pointer; border-radius: 0 !important;
+  font-family: var(--font-b); font-size: calc(var(--fs-tiny) * 1.2); /* +20% */
+  letter-spacing: .12em; font-weight: 600; opacity: .4; padding: 2px 0;
+  text-shadow: none !important;   /* remove the dark smudge from style.css */
+  /* Fixed slot so active/inactive weight changes never shift the layout. */
+  min-width: 2.4em; text-align: center; display: inline-block;
+  transition: opacity .3s ease, color .3s ease;
+}
+/* Vertical divider between UA and EN (replaces the old white border). */
+body.barrier .lang button + button {
+  border-left: 1px solid rgba(45,48,49,.3) !important;
+  padding-left: 12px !important; margin-left: 2px;
+}
+body.barrier .header.on-dark .lang button + button { border-left-color: rgba(255,255,255,.4) !important; }
+body.barrier .lang button:hover { opacity: .75; }
+body.barrier .lang button.active { opacity: 1; }
+body.barrier .lang button:focus,
+body.barrier .lang button:focus-visible { outline: none; }
+body.barrier .burger span { background: var(--ink); transition: background .3s ease; }
+
+/* When the header sits over a dark section, flip chrome to light. */
+body.barrier .header.on-dark .lang button { color: #fff !important; }
+body.barrier .header.on-dark .burger span { background: #fff; }
+/* Over dark sections, the ink logo would vanish -> make it white. */
+body.barrier .header.on-dark .b-logo-text { color: #fff; }
+body.barrier .header.on-dark.condensed { background: rgba(45,48,49,.72); border-bottom: 0; }
+
+/* Dark-grey scroll-progress thread (was gold). */
+body.barrier .scroll-progress { background: #2d3031 !important; opacity: 1; height: 2px; }
+
+/* ======================= HERO ======================= */
+body.barrier .b-hero {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px var(--pad-x) 60px;
+  background: linear-gradient(180deg, #ffffff 0%, #f0efee 60%, #e7e6e5 100%);
+  position: relative;
+}
+
+/* While the hero clip plays, the page is pinned (scroll trapped by JS). */
+html.hero-locked,
+html.hero-locked body { overflow: hidden !important; height: 100%; }
+
+/* ---- Split hero: brand text on the left, full-height video on the right ---- */
+body.barrier .b-hero--split {
+  flex-direction: row;
+  align-items: stretch;             /* let the video column fill full height */
+  justify-content: space-between;
+  gap: clamp(28px, 5vw, 72px);
+  text-align: left;
+  /* No vertical padding on the section — the video must touch top & bottom.
+     Horizontal padding only on the left (text side). */
+  padding: 0;
+  overflow: hidden;
+}
+/* Left column — the brand text, vertically centred, left-aligned. */
+body.barrier .b-hero--split .b-hero-fx {
+  flex: 1 1 46%;
+  align-self: center;
+  align-items: flex-start;
+  text-align: left;
+  width: auto;
+  padding: clamp(100px, 12vh, 140px) 0 60px clamp(20px, 5vw, 90px);
+}
+body.barrier .b-hero--split .b-hero-title { text-align: left; }
+/* The text no longer sits over the video — drop the halo + rim. */
+body.barrier .b-hero--split .b-hero-fx::before { display: none; }
+body.barrier .b-hero--split .b-hero-title,
+body.barrier .b-hero--split .b-brandsub { text-shadow: none; }
+
+/* Right column — full-height video, edge to edge (top → bottom). */
+body.barrier .b-hero-video {
+  flex: 0 0 clamp(320px, 46vw, 760px);
+  align-self: stretch;
+  position: relative;
+  min-height: 0;
+}
+
+@media (max-width: 860px) {
+  /* MOBILE: video fills the whole hero; text sits ON TOP of it with no
+     background panel. Title overlaps the upper part of the video, the small
+     brand line sits near the bottom. Typewriter aside is hidden. */
+  body.barrier .b-hero--split {
+    display: block;                  /* stop the flex column; use overlay layout */
+    position: relative;
+    min-height: 100svh;
+    padding: 0;
+    text-align: center;
+  }
+
+  /* Hide the typewriter lines on mobile only. */
+  body.barrier .b-hero--split .b-hero-aside { display: none; }
+
+  /* Video = full-bleed background of the hero. */
+  body.barrier .b-hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  /* Text wrapper is a full-screen overlay above the video. Children are
+     pinned individually: title to the top, brand line to the bottom. */
+  body.barrier .b-hero--split .b-hero-fx {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    transform: none !important;      /* ignore the desktop scroll drift here */
+  }
+  body.barrier .b-hero--split .b-hero-fx::before { display: none; } /* no halo */
+
+  /* Title over the TOP of the video — transparent, no panel, ~30% smaller. */
+  body.barrier .b-hero--split .b-hero-title {
+    position: absolute;
+    top: clamp(92px, 13vh, 140px);
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: 100%;
+    text-align: center;
+    font-size: clamp(19px, 5.6vw, 32px);   /* small enough to never overflow */
+    line-height: 1.06;
+    letter-spacing: -.01em;
+    text-shadow: 0 1px 12px rgba(255,255,255,.65); /* legibility, not a bg */
+  }
+  /* Allow wrapping; break long words rather than overflow the viewport. */
+  body.barrier .b-hero--split .b-hero-title > span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Small brand line near the bottom, over the video, transparent. */
+  body.barrier .b-hero--split .b-brandsub {
+    position: absolute;
+    bottom: clamp(56px, 8vh, 96px);
+    left: 12px;
+    right: 12px;
+    margin: 0;
+    text-align: center;
+    white-space: normal;
+    font-size: clamp(13px, 3.4vw, 18px);
+    letter-spacing: .08em;
+    line-height: 1.3;
+    text-shadow: 0 1px 12px rgba(255,255,255,.65);
+  }
+
+  body.barrier .b-hero--split .b-scroll { z-index: 3; }
+
+  /* Full-bleed cover video — NO edge feathering on mobile (clean rectangle). */
+  body.barrier .b-hero-bloom {
+    object-fit: cover;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+
+  /* Header tweaks (mobile only) --------------------------------- */
+  /* Bring UA and EN closer together. */
+  body.barrier .header .lang { gap: 4px; }
+  body.barrier .header .lang button + button {
+    padding-left: 7px !important;
+    margin-left: 0;
+  }
+  body.barrier .header .lang button { min-width: 0; padding: 2px 0; }
+
+  /* Push the burger back to the edge so its right gap equals the logo's
+     left gap (= --pad-x). The button's own 6px padding is cancelled. */
+  body.barrier .header .burger { padding-right: 0; margin-right: 0; }
+  /* Tighten the space between the language switch and the burger. */
+  body.barrier .header .header-right { gap: 12px; flex: none; }
+  /* Keep the logo from forcing the row wider than the screen. */
+  body.barrier .header .b-logo-text { font-size: 17px; letter-spacing: .08em; }
+
+  /* Hard guard against any horizontal overflow widening the document and
+     pushing the fixed header right-block off-screen. */
+  body.barrier .b-hero--split { overflow: hidden; }
+  html, body.barrier { overflow-x: hidden; max-width: 100%; }
+}
+/* Decorative still — IMG_5519 (ice block + blue blooms + serum bottle).
+   Sits BEHIND the hero text (z-index 0). Centred on screen, spanning the
+   FULL height of the hero section, fit to the coloured artwork (contain)
+   so the bottle + ice read fully. Scales down responsively (mobile) while
+   staying centred behind the text. */
+body.barrier .b-hero-bloom {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;               /* fill the column top → bottom, edge to edge */
+  object-position: center center;
+  pointer-events: none;
+  background: transparent;
+  /* Only soften the LEFT edge, where the video meets the text column, so the
+     seam blends into the light hero background. Top / bottom / right reach
+     the section edges. */
+  -webkit-mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 16%, #000 100%);
+          mask-image: linear-gradient(90deg, rgba(0,0,0,0) 0%, #000 16%, #000 100%);
+}
+/* (Mobile override for .b-hero-bloom lives in the responsive split block below.) */
+/* Keep the hero text above the decorative still. */
+body.barrier .b-hero-fx { position: relative; z-index: 1; }
+body.barrier .b-hero-aside { z-index: 2; }
+
+/* Soft light halo behind the hero text so the dark headline keeps contrast
+   where it overlaps the blue ice/bottle — lifts legibility without darkening
+   the artwork. Sits above the image (z 0) but below the text content. */
+body.barrier .b-hero-fx::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 165%;
+  z-index: -1;
+  background: radial-gradient(
+    60% 50% at 50% 50%,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 255, 255, 0.72) 38%,
+    rgba(255, 255, 255, 0.30) 62%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  pointer-events: none;
+}
+/* Light rim on the dark type so it stays crisp over darker ice patches. */
+body.barrier .b-hero-title,
+body.barrier .b-brandsub {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65),
+    0 0 18px rgba(255, 255, 255, 0.55);
+}
+body.barrier .b-eyebrow {
+  font-size: var(--fs-tiny);
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 clamp(24px, 6vw, 60px);
+}
+/* Brand name in the hero — the old eyebrow slot, but ~2x larger. */
+body.barrier .b-brandline {
+  font-size: clamp(22px, 2.6vw, 30px);     /* ~2x the 13px eyebrow */
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 10px;
+}
+/* Tagline — same size as the brand line, single row. */
+body.barrier .b-brandsub {
+  font-size: clamp(22px, 2.6vw, 30px);     /* same as .b-brandline */
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;                     /* keep on one line */
+  margin: 0 0 clamp(26px, 6vw, 56px);
+}
+@media (max-width: 560px) {
+  /* allow wrapping on very small screens so it doesn't overflow */
+  body.barrier .b-brandsub { white-space: normal; }
+}
+body.barrier .b-hero-title {
+  font-size: var(--fs-display);
+  line-height: .92;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  margin: 0;
+  color: var(--ink);
+  text-align: center;
+}
+/* Each line of the hero title on its own centered row. */
+body.barrier .b-hero-title > span { display: block; }
+
+/* Top-left corner typewriter lines — aligned under the header, small Futura. */
+body.barrier .b-hero { position: relative; }
+body.barrier .b-hero-aside {
+  position: absolute;
+  top: clamp(80px, 10vh, 116px);    /* ~header height */
+  left: var(--pad-x);
+  max-width: min(40ch, 52vw);
+  text-align: left;
+  z-index: 2;
+}
+body.barrier .b-type {
+  margin: 0 0 14px;
+  font-family: var(--font-b);
+  font-size: calc(var(--fs-tiny) * 2);   /* 2x larger */
+  line-height: 1.55;
+  letter-spacing: .04em;
+  color: var(--ink);
+  min-height: 1.55em;                /* reserve space so layout doesn't jump */
+}
+body.barrier .b-type--muted { color: var(--ink-soft); }
+/* Each WORD floats in softly, one after another (normal line wrapping). */
+body.barrier .b-type-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(6px);
+  transition: opacity .55s ease, filter .55s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+}
+body.barrier .b-type-word.in { opacity: 1; filter: blur(0); transform: none; }
+@media (max-width: 760px) {
+  /* on small screens drop it below the header, full width, not overlapping */
+  body.barrier .b-hero-aside { position: static; margin: 90px var(--pad-x) 0; max-width: none; }
+}
+
+/* Hero content wrapper — keep everything centered (don't break the layout). */
+body.barrier .b-hero-fx {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  width: 100%;
+  transition: transform .4s cubic-bezier(.2,.7,.2,1);
+  opacity: var(--hero-op, 1);
+  will-change: transform, opacity;
+}
+
+/* ---- Hero intro: "emerge from haze into focus" ----
+   Each element starts blurred, faint and slightly larger, then
+   settles into sharp focus. Staggered by --i. */
+body.barrier .i-haze {
+  opacity: 0;
+  filter: blur(14px);
+  transform: scale(1.06);
+  transition: opacity 1.1s ease, filter 1.1s ease, transform 1.1s cubic-bezier(.2,.7,.2,1);
+  transition-delay: calc(var(--i, 0) * .14s + .15s);
+  will-change: opacity, filter, transform;
+}
+body.barrier .b-intro.in .i-haze {
+  opacity: 1; filter: blur(0); transform: none;
+}
+/* the muted note keeps its lower opacity target */
+body.barrier .b-intro.in .b-hero-note.i-haze { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.barrier .i-haze { opacity: 1 !important; filter: none !important; transform: none !important; transition: none !important; }
+  body.barrier .b-hero-fx { transform: none !important; opacity: 1 !important; }
+}
+body.barrier .b-hero-sub {
+  margin: clamp(18px, 4vw, 32px) auto 0;
+  max-width: 540px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--ink);
+}
+body.barrier .b-hero-note {
+  margin-top: clamp(16px, 4vw, 28px);
+  max-width: 560px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+body.barrier .b-scroll {
+  position: absolute;
+  bottom: 28px; left: 50%; transform: translateX(-50%);
+  font-size: var(--fs-tiny); letter-spacing: .28em; text-transform: uppercase;
+  color: var(--ink-soft);
+  display: flex; align-items: center; gap: 10px;
+}
+body.barrier .b-scroll::after {
+  content: ""; width: 1px; height: 36px; background: var(--ink-soft);
+  animation: bScroll 2.2s ease-in-out infinite;
+  transform-origin: top;
+}
+@keyframes bScroll { 0%,100%{transform:scaleY(.3);opacity:.4} 50%{transform:scaleY(1);opacity:1} }
+
+/* =================== EDITORIAL SECTION =================== */
+body.barrier .b-sec {
+  padding: clamp(80px, 14vh, 180px) var(--pad-x);
+  border-top: 1px solid var(--line-b);
+}
+body.barrier .b-sec--dark {
+  background: var(--ink);
+  color: var(--paper);
+  border-top: 0;
+}
+body.barrier .b-sec--dark .b-kicker,
+body.barrier .b-sec--dark .b-lead,
+body.barrier .b-sec--dark .b-col { color: var(--paper); }
+
+body.barrier .b-kicker {
+  display: flex; flex-wrap: wrap; gap: 8px 22px;
+  font-size: var(--fs-tiny); letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 clamp(24px, 5vw, 48px);
+}
+body.barrier .b-kicker span { position: relative; }
+
+body.barrier .b-lead {
+  font-size: var(--fs-tagline);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  text-transform: uppercase;
+  max-width: 14ch;
+  margin: 0 0 clamp(32px, 6vw, 64px);
+  color: var(--ink);
+}
+body.barrier .b-lead em { font-style: normal; color: var(--ink-soft); }
+
+body.barrier .b-grid2 {
+  display: grid; grid-template-columns: 1fr; gap: clamp(20px, 4vw, 48px);
+}
+@media (min-width: 820px) {
+  body.barrier .b-grid2 { grid-template-columns: 1fr 1fr; }
+  body.barrier .b-grid2.offset { grid-template-columns: 1fr 1.2fr; }
+}
+body.barrier .b-col {
+  font-size: var(--fs-body); line-height: 1.7; color: var(--ink);
+  max-width: 48ch;
+}
+body.barrier .b-col + .b-col { color: var(--ink-soft); }
+
+/* Big statement row (mega type that spans the viewport) */
+body.barrier .b-statement {
+  font-size: var(--fs-mega);
+  line-height: .9;
+  font-weight: 800;
+  letter-spacing: -.03em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+}
+body.barrier .b-sec--dark .b-statement { color: var(--paper); }
+
+/* Media band */
+body.barrier .b-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position: center;
+  margin: clamp(32px, 6vw, 72px) 0;
+  filter: grayscale(1) contrast(1.02);
+  transition: filter .9s ease;
+}
+body.barrier .b-media:hover { filter: grayscale(0) contrast(1); }
+/* Already-monochrome finished composition: no extra desaturation. */
+body.barrier .b-media--plain { filter: none; }
+body.barrier .b-media--plain:hover { filter: none; }
+
+/* =================== PRODUCT INDEX =================== */
+body.barrier #home-bestsellers-grid {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--line-b);
+  border: 1px solid var(--line-b);
+}
+@media (min-width: 680px) { body.barrier #home-bestsellers-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1080px) { body.barrier #home-bestsellers-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+body.barrier .b-prod {
+  background: var(--paper);
+  padding: clamp(22px, 3vw, 40px);
+  display: flex; flex-direction: column;
+  min-height: 420px;
+  text-decoration: none; color: var(--ink);
+  transition: background .5s ease, color .5s ease;
+}
+body.barrier .b-prod:hover { background: var(--ink); color: var(--paper); }
+body.barrier .b-prod-idx {
+  font-size: var(--fs-tiny); letter-spacing: .2em; color: var(--ink-soft);
+}
+body.barrier .b-prod:hover .b-prod-idx { color: #ffffff99; }
+body.barrier .b-prod-media {
+  flex: 1; margin: 20px 0; background-size: contain; background-repeat: no-repeat;
+  background-position: center; min-height: 180px;
+  filter: grayscale(1); transition: filter .5s ease;
+}
+body.barrier .b-prod:hover .b-prod-media { filter: grayscale(0); }
+body.barrier .b-prod-name {
+  font-size: clamp(15px, 1.4vw, 19px); font-weight: 700;
+  letter-spacing: .02em; text-transform: uppercase; line-height: 1.2;
+}
+body.barrier .b-prod-foot {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 14px; font-size: var(--fs-tiny); letter-spacing: .1em;
+}
+
+/* =================== STORY STATS =================== */
+body.barrier .b-stats {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  margin-top: clamp(40px, 8vw, 90px);
+  background: #ffffff22; border: 1px solid #ffffff22;
+}
+@media (min-width: 680px) { body.barrier .b-stats { grid-template-columns: 1fr 1fr 1fr; } }
+body.barrier .b-stat {
+  background: var(--ink); padding: clamp(24px, 4vw, 44px);
+  display: flex; flex-direction: column; gap: 10px;
+}
+body.barrier .b-stat-num {
+  font-size: clamp(40px, 6vw, 84px); font-weight: 800; line-height: 1;
+  letter-spacing: -.03em; color: var(--paper);
+}
+body.barrier .b-stat-lbl {
+  font-size: var(--fs-tiny); letter-spacing: .14em; text-transform: uppercase;
+  color: #ffffff99;
+}
+
+/* =================== REVIEWS =================== */
+body.barrier .b-reviews {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--line-b); border: 1px solid var(--line-b);
+}
+@media (min-width: 820px) { body.barrier .b-reviews { grid-template-columns: 1fr 1fr 1fr; } }
+body.barrier .b-review {
+  background: var(--paper); margin: 0; padding: clamp(26px, 3vw, 44px);
+  display: flex; flex-direction: column; justify-content: space-between; gap: 28px;
+  min-height: 300px;
+}
+body.barrier .b-review blockquote {
+  margin: 0; font-size: clamp(17px, 1.5vw, 22px); line-height: 1.45;
+  letter-spacing: -.01em; color: var(--ink);
+}
+body.barrier .b-review figcaption {
+  font-size: var(--fs-tiny); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* =================== FAQ =================== */
+body.barrier .b-faq { border-top: 1px solid var(--line-b); }
+/* Neutralise the old dark-theme card styling from style.css on barrier pages. */
+body.barrier .b-faq-item {
+  border-bottom: 1px solid var(--line-b);
+  background: transparent !important;
+  border-top: 0; border-left: 0; border-right: 0; border-radius: 0;
+  margin: 0; padding: 0; box-shadow: none;
+}
+body.barrier .b-faq-body { background: transparent !important; }
+body.barrier .b-faq-head {
+  width: 100%; background: none; border: 0; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  padding: clamp(22px, 3vw, 34px) 0;
+  font-family: var(--font-b); text-align: left;
+  font-size: clamp(16px, 1.8vw, 24px); font-weight: 600;
+  letter-spacing: -.01em; text-transform: uppercase; color: var(--ink);
+}
+body.barrier .b-faq-sign {
+  font-weight: 400; font-size: 1.4em; line-height: 1; transition: transform .4s ease; flex: none;
+}
+body.barrier .b-faq-item.open .b-faq-sign { transform: rotate(45deg); }
+body.barrier .b-faq-body {
+  overflow: hidden; max-height: 0; transition: max-height .5s ease, padding .5s ease;
+}
+body.barrier .b-faq-item.open .b-faq-body { max-height: 400px; padding-bottom: clamp(22px, 3vw, 34px); }
+body.barrier .b-faq-body p {
+  margin: 0; max-width: 70ch; font-size: var(--fs-body); line-height: 1.7; color: var(--ink-soft);
+}
+
+/* =================== CTA / FINAL =================== */
+body.barrier .b-final {
+  min-height: 90svh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  text-align: center;
+  background: var(--ink); color: var(--paper);
+  padding: 80px var(--pad-x);
+}
+body.barrier .b-final .b-cta-title {
+  font-size: var(--fs-mega); line-height: .88; font-weight: 800;
+  letter-spacing: -.03em; text-transform: uppercase; margin: 0;
+}
+body.barrier .b-link {
+  display: inline-block; margin-top: 44px;
+  font-size: var(--fs-tiny); letter-spacing: .24em; text-transform: uppercase;
+  color: var(--paper); text-decoration: none; padding-bottom: 6px;
+  border-bottom: 1px solid var(--paper);
+  transition: opacity .3s ease;
+}
+body.barrier .b-link:hover { opacity: .6; }
+
+/* =================== FOOTER =================== */
+body.barrier .footer {
+  background: var(--ink); color: var(--paper);
+  padding: 40px var(--pad-x);
+  border-top: 1px solid #ffffff22;
+}
+body.barrier .footer-bottom {
+  font-size: var(--fs-tiny); letter-spacing: .14em; text-transform: uppercase;
+  color: #ffffff88; text-align: center; border: 0; padding-top: 0;
+}
+
+/* =================== CATALOG =================== */
+body.barrier .b-toolbar {
+  display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between;
+  align-items: center; margin-top: clamp(32px, 6vw, 60px);
+  padding-bottom: 20px; border-bottom: 1px solid var(--line-b);
+}
+body.barrier .b-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+body.barrier .b-filters .chip {
+  background: none; border: 1px solid var(--line-b); cursor: pointer;
+  font-family: var(--font-b); font-size: var(--fs-tiny); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink); padding: 9px 18px; border-radius: 0;
+  transition: background .3s ease, color .3s ease, border-color .3s ease;
+}
+body.barrier .b-filters .chip:hover { border-color: var(--ink); }
+body.barrier .b-filters .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+body.barrier .b-select {
+  font-family: var(--font-b); font-size: var(--fs-tiny); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink); background: none;
+  border: 1px solid var(--line-b); padding: 9px 16px; border-radius: 0; cursor: pointer;
+}
+
+body.barrier .b-catalog-grid {
+  display: grid; grid-template-columns: 1fr; gap: 1px;
+  background: var(--line-b); border: 1px solid var(--line-b);
+  margin-top: 1px;
+}
+@media (min-width: 560px) { body.barrier .b-catalog-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 980px) { body.barrier .b-catalog-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+body.barrier .b-catalog-grid .card-wrap { position: relative; background: var(--paper); }
+body.barrier .b-catalog-grid .card {
+  display: flex; flex-direction: column; height: 100%;
+  padding: clamp(18px, 2vw, 30px); text-decoration: none; color: var(--ink);
+  transition: background .5s ease, color .5s ease;
+}
+body.barrier .b-catalog-grid .card:hover { background: var(--ink); color: var(--paper); }
+body.barrier .b-catalog-grid .card-media-wrap { overflow: hidden; }
+body.barrier .b-catalog-grid .card-media {
+  aspect-ratio: 1/1; background-size: contain; background-repeat: no-repeat;
+  background-position: center; filter: grayscale(1); transition: filter .5s ease, transform .6s ease;
+}
+body.barrier .b-catalog-grid .card:hover .card-media { filter: grayscale(0); transform: scale(1.04); }
+body.barrier .b-catalog-grid .card-body { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+body.barrier .b-catalog-grid .card-cat {
+  font-size: var(--fs-tiny); letter-spacing: .18em; text-transform: uppercase; color: var(--ink-soft);
+}
+body.barrier .b-catalog-grid .card:hover .card-cat { color: #ffffff99; }
+body.barrier .b-catalog-grid .card-name {
+  font-size: clamp(14px, 1.2vw, 17px); font-weight: 700; letter-spacing: .01em;
+  text-transform: uppercase; line-height: 1.25; color: var(--ink);
+}
+body.barrier .b-catalog-grid .card:hover .card-name { color: var(--paper); }
+body.barrier .b-catalog-grid .card-price { color: var(--ink); }
+body.barrier .b-catalog-grid .card:hover .card-price { color: var(--paper); }
+body.barrier .b-catalog-grid .card-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: auto; padding-top: 14px; font-size: var(--fs-tiny); letter-spacing: .06em;
+}
+body.barrier .b-catalog-grid .card-rating { color: var(--ink-soft); }
+body.barrier .b-catalog-grid .card:hover .card-rating { color: #ffffff99; }
+body.barrier .b-catalog-grid .card-chips,
+body.barrier .b-catalog-grid .active-chip { display: none; } /* keep cards minimal */
+body.barrier .b-catalog-grid .badge {
+  position: absolute; top: 12px; left: 12px; z-index: 2;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  background: var(--ink); color: var(--paper); padding: 4px 9px;
+}
+
+/* =================== FLYOUT MENU =================== */
+body.barrier .menu-overlay {
+  position: fixed; inset: 0; z-index: 70; background: rgba(45,48,49,.4);
+  opacity: 0; visibility: hidden; transition: opacity .5s ease, visibility .5s ease;
+  backdrop-filter: blur(2px);
+}
+body.barrier .menu-overlay.open { opacity: 1; visibility: visible; }
+body.barrier .mobile-menu {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 80;
+  width: min(460px, 100%);
+  background: var(--paper-3);   /* ~2 tones darker than pure white */
+  transform: translateX(100%); transition: transform .6s cubic-bezier(.76,0,.24,1);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(40px, 8vw, 80px);
+  border-left: 1px solid var(--line-b);
+  border-radius: 0;             /* no rounding */
+}
+/* No shadow on the drawer at all (closed or open) — it was bleeding onto
+   the page edges. */
+body.barrier .mobile-menu,
+body.barrier .mobile-menu.open { box-shadow: none !important; }
+body.barrier .mobile-menu.open { transform: none; }
+body.barrier .menu-close {
+  position: absolute; top: 28px; right: clamp(28px, 6vw, 56px);
+  background: none; border: 0; cursor: pointer; font-size: 34px; line-height: 1; color: var(--ink);
+  transition: transform .4s ease;
+}
+body.barrier .menu-close:hover { transform: rotate(90deg); }
+body.barrier .menu-links { display: flex; flex-direction: column; gap: 4px; }
+body.barrier .menu-links > a,
+body.barrier .menu-group-head {
+  font-size: clamp(28px, 5vw, 46px); font-weight: 800; letter-spacing: -.02em;
+  text-transform: uppercase; color: var(--ink); text-decoration: none;
+  padding: 8px 0 8px 0; position: relative; width: fit-content;
+  transition: padding-left .5s cubic-bezier(.76,0,.24,1), color .35s ease;
+}
+/* A short marker line that grows from the left as the item slides right. */
+body.barrier .menu-links > a::before,
+body.barrier .menu-group-head::before {
+  content: ""; position: absolute; left: 0; top: 50%;
+  width: 0; height: 2px; background: currentColor;
+  transform: translateY(-50%);
+  transition: width .5s cubic-bezier(.76,0,.24,1), opacity .4s ease;
+  opacity: 0;
+}
+/* Staggered reveal of menu items when the panel opens.
+   Items glide up + fade + unblur with a soft expo-out easing, each one a beat
+   after the previous. They wait for the drawer to (almost) finish sliding in
+   so the motion reads as smooth and intentional, not jittery. */
+body.barrier .mobile-menu .menu-links > a,
+body.barrier .mobile-menu .menu-group {
+  opacity: 0;
+  transform: translateY(18px);
+  filter: blur(4px);
+  transition:
+    opacity .7s cubic-bezier(.16, 1, .3, 1),
+    transform .7s cubic-bezier(.16, 1, .3, 1),
+    filter .7s cubic-bezier(.16, 1, .3, 1);
+  transition-delay: 0s;            /* reset when closing -> instant hide */
+}
+body.barrier .mobile-menu.open .menu-links > a,
+body.barrier .mobile-menu.open .menu-group {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+/* Stagger: start after the drawer has mostly arrived (~.28s), then +90ms each. */
+body.barrier .mobile-menu.open .menu-links > *:nth-child(1) { transition-delay: .28s; }
+body.barrier .mobile-menu.open .menu-links > *:nth-child(2) { transition-delay: .37s; }
+body.barrier .mobile-menu.open .menu-links > *:nth-child(3) { transition-delay: .46s; }
+body.barrier .mobile-menu.open .menu-links > *:nth-child(4) { transition-delay: .55s; }
+body.barrier .mobile-menu.open .menu-links > *:nth-child(5) { transition-delay: .64s; }
+body.barrier .mobile-menu.open .menu-links > *:nth-child(6) { transition-delay: .73s; }
+
+/* Submenu links (under "Каталог") cascade too, a touch after their group. */
+body.barrier .mobile-menu .submenu a {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity .6s cubic-bezier(.16, 1, .3, 1),
+    transform .6s cubic-bezier(.16, 1, .3, 1);
+}
+body.barrier .mobile-menu.open .submenu a { opacity: 1; transform: none; }
+body.barrier .mobile-menu.open .submenu a:nth-child(1) { transition-delay: .50s; }
+body.barrier .mobile-menu.open .submenu a:nth-child(2) { transition-delay: .56s; }
+body.barrier .mobile-menu.open .submenu a:nth-child(3) { transition-delay: .62s; }
+body.barrier .mobile-menu.open .submenu a:nth-child(4) { transition-delay: .68s; }
+
+/* The drawer itself slides with the same soft easing for a cohesive feel. */
+body.barrier .mobile-menu {
+  transition: transform .62s cubic-bezier(.16, 1, .3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.barrier .mobile-menu .menu-links > a,
+  body.barrier .mobile-menu .menu-group,
+  body.barrier .mobile-menu .submenu a {
+    transition: opacity .3s ease !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+body.barrier .menu-links > a:hover,
+body.barrier .menu-group-head:hover { padding-left: 48px; }
+body.barrier .menu-links > a:hover::before,
+body.barrier .menu-group-head:hover::before { width: 34px; opacity: 1; }
+body.barrier .submenu { display: flex; flex-direction: column; gap: 2px; padding: 6px 0 14px 2px; }
+body.barrier .submenu a {
+  font-size: var(--fs-body); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); text-decoration: none; padding: 4px 0;
+  transition: color .3s ease, padding-left .3s ease;
+}
+body.barrier .submenu a:hover { color: var(--ink); padding-left: 10px; }
+body.barrier .menu-cart {
+  margin-top: 24px; font-size: var(--fs-tiny); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none; display: inline-flex; gap: 10px; align-items: center;
+  transition: opacity .3s ease;
+}
+body.barrier .menu-cart:hover { opacity: .6; }
+body.barrier .menu-cart .cart-ic { color: var(--ink); flex: none; }
+body.barrier .menu-cart .cart-count {
+  background: var(--ink); color: var(--paper); border-radius: 0;   /* square, no rounding */
+  min-width: 20px; height: 20px; padding: 0 5px;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 11px;
+}
+body.barrier .burger { background: none; border: 0; cursor: pointer; display: flex; flex-direction: column; gap: 5px; padding: 6px; }
+body.barrier .burger span { display: block; width: 26px; height: 2px; }
+
+/* ============================================================
+   LEGACY SECTIONS — restyle the original (brand/contacts/product)
+   shared classes into the Barrier+ monochrome editorial look so
+   those pages match without rewriting their markup.
+   ============================================================ */
+body.barrier .container { max-width: 1400px; margin: 0 auto; padding-left: var(--pad-x); padding-right: var(--pad-x); }
+body.barrier .section { padding: clamp(70px, 12vh, 150px) 0; border-top: 1px solid var(--line-b); background: var(--paper) !important; }
+body.barrier .section .section-title,
+body.barrier .section h2 {
+  font-family: var(--font-b); color: var(--ink);
+  font-size: var(--fs-tagline); line-height: 1.05; font-weight: 800;
+  letter-spacing: -.02em; text-transform: uppercase;
+}
+body.barrier .section h3 {
+  font-family: var(--font-b); color: var(--ink); text-transform: uppercase;
+  font-size: clamp(16px, 1.5vw, 20px); font-weight: 700; letter-spacing: .01em;
+}
+body.barrier .eyebrow {
+  font-family: var(--font-b); color: var(--ink-soft) !important;
+  font-size: var(--fs-tiny); letter-spacing: .2em; text-transform: uppercase;
+}
+body.barrier .section p,
+body.barrier .section-sub,
+body.barrier .section li { color: var(--ink); font-family: var(--font-b); }
+body.barrier .section-sub { color: var(--ink-soft) !important; font-size: var(--fs-body); line-height: 1.7; }
+
+/* Brand hero */
+body.barrier .brand-hero { filter: grayscale(1) contrast(1.03); position: relative; }
+body.barrier .brand-hero::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.55)); }
+body.barrier .brand-hero-inner { position: relative; z-index: 1; }
+body.barrier .brand-hero h1 {
+  font-family: var(--font-b); color: var(--ink); text-transform: uppercase;
+  font-size: var(--fs-display); line-height: .95; font-weight: 800; letter-spacing: -.02em;
+}
+body.barrier .brand-hero p { color: var(--ink); }
+
+/* Values grid */
+body.barrier .values { gap: 1px; background: var(--line-b); border: 1px solid var(--line-b); }
+body.barrier .value { background: var(--paper); padding: clamp(24px,3vw,40px); border: 0 !important; border-radius: 0 !important; }
+body.barrier .value-icon { filter: grayscale(1); }
+
+/* Feature blocks */
+body.barrier .feature-media { filter: grayscale(1); transition: filter .6s ease; }
+body.barrier .feature-media:hover { filter: grayscale(0); }
+body.barrier .feature-body h2 { color: var(--ink); }
+
+/* Blog post */
+body.barrier .post-feature-media { filter: grayscale(1); transition: filter .6s ease; }
+body.barrier .post-feature-media:hover { filter: grayscale(0); }
+body.barrier .post-tag { background: var(--ink); color: var(--paper); border-radius: 0; }
+body.barrier .post-feature-body h3 { color: var(--ink); font-size: clamp(22px,2.4vw,36px); }
+
+/* Buttons */
+body.barrier .btn, body.barrier .btn-fill {
+  font-family: var(--font-b); border-radius: 0; text-transform: uppercase;
+  letter-spacing: .14em; font-size: var(--fs-tiny); font-weight: 600;
+  background: none; color: var(--ink); border: 1px solid var(--ink);
+  padding: 14px 28px; transition: background .4s ease, color .4s ease;
+}
+body.barrier .btn-fill { background: var(--ink); color: var(--paper); }
+body.barrier .btn:hover { background: var(--ink); color: var(--paper); }
+body.barrier .btn-fill:hover { opacity: .85; }
+
+/* Contact page + generic cards/panels */
+body.barrier .contact-card,
+body.barrier .ci-list li,
+body.barrier .acc-item,
+body.barrier .card {
+  background: var(--paper) !important; color: var(--ink) !important;
+  border-color: var(--line-b) !important;
+}
+body.barrier .gold, body.barrier .num, body.barrier .rating, body.barrier .stars { color: var(--ink) !important; }
+/* Related-products cards on the PDP: desaturate media, neutralise accents. */
+body.barrier .card-media { filter: grayscale(1); transition: filter .5s ease; }
+body.barrier .card-wrap:hover .card-media { filter: grayscale(0); }
+body.barrier .card-cat, body.barrier .card-name, body.barrier .card-price { color: var(--ink) !important; }
+body.barrier .acc-head, body.barrier .acc-head span, body.barrier .faq-sign { color: var(--ink) !important; }
+body.barrier .variant.active { border-color: var(--ink) !important; color: var(--ink) !important; }
+
+/* Product detail page */
+body.barrier .pdp { color: var(--ink); }
+body.barrier .pdp-title { font-family: var(--font-b); color: var(--ink); text-transform: uppercase; font-weight: 800; letter-spacing: -.01em; }
+body.barrier .pdp-main, body.barrier .pdp-thumb { filter: grayscale(1); transition: filter .5s ease; }
+body.barrier .pdp-main:hover { filter: grayscale(0); }
+body.barrier .pdp-price, body.barrier .pdp-info .price { color: var(--ink); }
+body.barrier .variant, body.barrier .qty, body.barrier .add-btn {
+  font-family: var(--font-b); border-radius: 0; text-transform: uppercase; letter-spacing: .1em;
+}
+body.barrier .add-btn { background: var(--ink); color: var(--paper); border: 1px solid var(--ink); }
+body.barrier .active-chip { background: var(--paper); color: var(--ink); border: 1px solid var(--line-b); border-radius: 0; }
+body.barrier .breadcrumb, body.barrier .breadcrumb a { color: var(--ink-soft); }
+
+/* Contact page: light form fields + neutral links/titles */
+body.barrier input,
+body.barrier textarea,
+body.barrier select,
+body.barrier .form input,
+body.barrier .form textarea {
+  background: var(--paper) !important; color: var(--ink) !important;
+  border: 1px solid var(--line-b) !important; border-radius: 0 !important;
+  font-family: var(--font-b);
+}
+body.barrier input::placeholder, body.barrier textarea::placeholder { color: var(--ink-soft); }
+body.barrier input:focus, body.barrier textarea:focus { border-color: var(--ink) !important; outline: none; }
+body.barrier .ci-label { color: var(--ink-soft) !important; letter-spacing: .14em; text-transform: uppercase; font-size: var(--fs-tiny); }
+body.barrier .ci-list a, body.barrier .contacts-info a { color: var(--ink) !important; }
+body.barrier .ci-icon, body.barrier .contact-icon { filter: grayscale(1); }
+body.barrier .section-title { color: var(--ink) !important; }
+/* Submit button -> solid ink */
+body.barrier .form button,
+body.barrier button[type="submit"] {
+  background: var(--ink) !important; color: var(--paper) !important;
+  border: 1px solid var(--ink) !important; border-radius: 0 !important;
+  font-family: var(--font-b); text-transform: uppercase; letter-spacing: .14em;
+}
+body.barrier .footer h4 { color: var(--paper); font-family: var(--font-b); text-transform: uppercase; letter-spacing: .1em; }
+body.barrier .footer a, body.barrier .footer p, body.barrier .footer li { color: #ffffffcc; }
+
+/* =================== SCROLL REVEAL =================== */
+body.barrier.js .reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1);
+}
+body.barrier.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body.barrier.js .reveal { opacity: 1 !important; transform: none !important; }
+  body.barrier .b-scroll::after { animation: none; }
+}
+
+/* Hide any leftover old homepage sections if present */
+body.barrier .hero2, body.barrier .trust-strip, body.barrier .editorial,
+body.barrier .ingredients-feature, body.barrier .story, body.barrier .quiz-section { display: none; }
+
+/* ============================================================
+   MOBILE HERO — final overrides (placed last to win the cascade).
+   These intentionally come after the desktop hero rules so the
+   mobile look is never clobbered by later same-specificity rules.
+   ============================================================ */
+@media (max-width: 860px) {
+  /* 1) Kill ALL edge feathering / halos on the hero video (no "book edge"
+        shadow on the left, no bright wash on the right). */
+  body.barrier .b-hero--split .b-hero-bloom {
+    -webkit-mask-image: none !important;
+            mask-image: none !important;
+  }
+  /* Clip the video strictly to its column so it can't spill past the screen
+     edges (was rendering a few px wider than the viewport). */
+  body.barrier .b-hero--split .b-hero-video {
+    left: 0; right: 0; width: 100%;
+    overflow: hidden;
+  }
+  body.barrier .b-hero--split .b-hero-bloom {
+    left: 0; right: 0; width: 100%;
+  }
+
+  /* 2) No light halo behind the hero text, and no heavy text rim. */
+  body.barrier .b-hero--split .b-hero-fx::before { content: none !important; display: none !important; }
+  body.barrier .b-hero--split .b-hero-title,
+  body.barrier .b-hero--split .b-brandsub {
+    text-shadow: 0 1px 10px rgba(255,255,255,.55);   /* light legibility only */
+  }
+
+  /* 3) "Scroll to view more" — pinned to the very bottom, small gap, one line. */
+  body.barrier .b-hero--split .b-scroll {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 14px;
+    margin: 0;
+    justify-content: center;
+    white-space: nowrap;                 /* never wrap to a second line */
+    font-size: 10px;
+    letter-spacing: .22em;
+    gap: 8px;
+  }
+  body.barrier .b-hero--split .b-scroll::after { height: 22px; }  /* shorter tick */
+}
