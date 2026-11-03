@@ -36,7 +36,7 @@ body.barrier {
   color: var(--ink);
   font-family: var(--font-b);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;   /* clip, not hidden — avoids breaking iOS vertical scroll */
   /* No text selection anywhere on the site. */
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -306,10 +306,12 @@ body.barrier .b-hero-video {
   /* Keep the logo from forcing the row wider than the screen. */
   body.barrier .header .b-logo-text { font-size: 17px; letter-spacing: .08em; }
 
-  /* Hard guard against any horizontal overflow widening the document and
-     pushing the fixed header right-block off-screen. */
+  /* Guard against horizontal overflow — but ONLY horizontally, and only on
+     body (never on <html>: `overflow-x:hidden` on the root element breaks
+     vertical scrolling on iOS Safari). `clip` doesn't create a scroll
+     container, so vertical scroll stays intact. */
   body.barrier .b-hero--split { overflow: hidden; }
-  html, body.barrier { overflow-x: hidden; max-width: 100%; }
+  body.barrier { overflow-x: clip; max-width: 100%; }
 }
 /* Decorative still — IMG_5519 (ice block + blue blooms + serum bottle).
    Sits BEHIND the hero text (z-index 0). Centred on screen, spanning the

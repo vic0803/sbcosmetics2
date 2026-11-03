@@ -44,6 +44,16 @@
       return;
     }
 
+    // Do NOT trap scrolling on touch / small screens. The "hold until the clip
+    // ends" effect is desktop-only (mouse wheel). On phones the page must
+    // scroll freely; the video just loops in the background.
+    const isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches
+      || window.matchMedia("(max-width: 860px)").matches;
+    if (isTouch) {
+      try { docEl.classList.remove("hero-locked"); video.loop = true; } catch (e) {}
+      return;
+    }
+
     let armed = true;      // gate is still available to trigger
     let locked = false;    // scroll currently trapped
     let released = false;  // clip finished — gate is done forever
