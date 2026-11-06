@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  <!-- Mark JS as active before first paint so reveal styles only hide content when JS can show it. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="icon" type="image/png" href="assets/logo/monogram.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Бренд та блог — Sophie Bilynska Cosmetics</title>
   <meta name="description" content="Еко-косметика ручної роботи Sophie Bilynska: гіпоалергенний догляд для всієї родини — від чутливої шкіри дорослих до найменших. Блог про натуральний догляд." />  <link rel="stylesheet" href="css/style.css" />
@@ -13,10 +16,10 @@
       <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
       <div class="header-right">
         <div class="lang">
-          <button data-lang="ua">UA</button>
-          <button data-lang="en">EN</button>
+          <button type="button" data-lang="ua">UA</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
-        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button type="button" class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -24,7 +27,7 @@
   <!-- Flyout menu -->
   <div class="menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Main menu">
-    <button class="menu-close" aria-label="Close">&times;</button>
+    <button type="button" class="menu-close" aria-label="Close">&times;</button>
     <div class="menu-links">
       <a href="brand.html" data-i18n="nav.about">Бренд</a>
       <div class="menu-group">
@@ -84,7 +87,7 @@
   </section>
 
   <!-- Feature: family -->
-  <section class="section" style="background:var(--black-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <section class="section" style="border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="container">
       <div class="feature">
         <div class="feature-media reveal" style="background-image:url('assets/brand/family.jpg')"></div>
@@ -114,7 +117,7 @@
   </section>
 
   <!-- Blog -->
-  <section class="section" id="blog" style="background:var(--black-soft);border-top:1px solid var(--line)">
+  <section class="section" id="blog" style="border-top:1px solid var(--line)">
     <div class="container">
       <p class="eyebrow" style="text-align:center" data-i18n="brand.blogKicker">Журнал</p>
       <h2 class="section-title" data-i18n="brand.blogTitle">Блог про чистий догляд</h2>

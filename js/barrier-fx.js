@@ -10,6 +10,8 @@
 
   const header = document.querySelector(".header");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Same breakpoint as the CSS for the split hero (see barrier.css).
+  const heroSmall = window.matchMedia("(max-width: 860px)");
   const darkSections = Array.from(document.querySelectorAll(".b-sec--dark, .b-final"));
   const medias = Array.from(document.querySelectorAll(".b-media"));
   const logo = document.querySelector(".b-logo");
@@ -209,7 +211,10 @@
       const vh = window.innerHeight;
       const p = Math.min(1, y / (vh * 0.8));        // 0..1 over ~80% viewport
       heroFx.style.setProperty("--hero-op", (1 - p).toFixed(3));
-      heroFx.style.transform = `translate3d(0, ${(-p * 40).toFixed(1)}px, 0)`;
+      // The drift is desktop-only. On small screens the hero stays put, so no inline transform.
+      heroFx.style.transform = heroSmall.matches
+        ? ""
+        : `translate3d(0, ${(-p * 40).toFixed(1)}px, 0)`;
     }
 
     // Condense the header after a little scroll.

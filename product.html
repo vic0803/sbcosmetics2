@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  <!-- Mark JS as active before first paint so reveal styles only hide content when JS can show it. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="icon" type="image/png" href="assets/logo/monogram.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Мило «Флора» — Sophie Bilynska Cosmetics</title>
   <meta name="description" content="Натуральне мило ручної роботи «Флора» від Sophie Bilynska." />  <link rel="stylesheet" href="css/style.css" />
@@ -13,10 +16,10 @@
       <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
       <div class="header-right">
         <div class="lang">
-          <button data-lang="ua">UA</button>
-          <button data-lang="en">EN</button>
+          <button type="button" data-lang="ua">UA</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
-        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button type="button" class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -24,7 +27,7 @@
   <!-- Flyout menu -->
   <div class="menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Main menu">
-    <button class="menu-close" aria-label="Close">&times;</button>
+    <button type="button" class="menu-close" aria-label="Close">&times;</button>
     <div class="menu-links">
       <a href="brand.html" data-i18n="nav.about">Бренд</a>
       <div class="menu-group">
@@ -48,7 +51,7 @@
   <!-- Sticky buy bar (mobile) -->
   <div class="sticky-buy">
     <span class="sb-price">320 ₴</span>
-    <button class="btn btn-fill btn-block" data-add data-i18n="pdp.add">Додати в кошик</button>
+    <button type="button" class="btn btn-fill btn-block" data-add data-i18n="pdp.add">Додати в кошик</button>
   </div>
 
   <footer class="footer" style="margin-bottom:72px">

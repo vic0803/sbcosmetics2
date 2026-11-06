@@ -143,6 +143,9 @@ const I18N = {
     "faq.q4": "Чи тестується косметика на тваринах?",
     "faq.a4": "Ніколи! Ми категорично проти тестування на тваринах (Cruelty-Free). Усі формули перевіряються дерматологічно в лабораторних умовах та на фокус-групах добровольців.",
 
+    "catalog.soonEyebrow": "Незабаром",
+    "catalog.soonTitle": "Нові формули в дорозі",
+    "catalog.soonText": "Ми готуємо нові засоби та рецептури. Щось цікаве зовсім скоро з'явиться у продажу — залишайтеся з нами.",
     "catalog.title": "Каталог",
     "catalog.sub": "20–40 ретельно підібраних засобів.",
     "filter.all": "Усі",
@@ -163,6 +166,10 @@ const I18N = {
     "pdp.usage": "Застосування",
     "pdp.shelf": "Термін придатності",
     "pdp.related": "Схожі товари",
+    "pdp.notFound": "Товар не знайдено.",
+    "pdp.backToCatalog": "До каталогу",
+    "contacts.fillIn": "Будь ласка, заповніть усі поля коректно.",
+    "contacts.mailHint": "Відкриваємо вашу пошту з готовим листом.",
     "pdp.reviews": "відгуків",
 
     "badge.new": "Новинка",
@@ -189,6 +196,8 @@ const I18N = {
     "b.p1a": "Більшість засобів перевантажені силіконами, сульфатами та синтетичними ароматизаторами. Вони дають миттєвий ефект, але з часом виснажують захисний бар'єр шкіри.",
     "b.p1b": "Роками індустрія радила додавати ще один крем, ще одну сироватку. Ми пропонуємо протилежне — прибрати зайве й залишити тільки те, що працює.",
     "b.p2k": "Філософія",
+    "b.statement1": "Менше,",
+    "b.statement2": "та чистіше.",
     "b.p2a": "Кожна формула — це холодне пресування, чисті екстракти та повний INCI на етикетці. Жодних «секретних компонентів».",
     "b.p2b": "Ми працюємо малими партіями, щоб активи залишались свіжими, а склад — чесним. Гіпоалергенно та cruelty-free.",
     "b.p3k1": "Активи",
@@ -200,6 +209,8 @@ const I18N = {
     "b.p4k2": "Бестселери",
     "b.p4lead": "Ритуал починається тут.",
     "b.ctaEyebrow": "Ботанічний догляд · Ручна робота",
+    "b.ctaLine1": "Твій ритуал",
+    "b.ctaLine2": "починається тут.",
     "b.ctaShop": "Переглянути каталог",
     "b.view": "Детальніше",
     "b.handmade": "Косметика ручної роботи",
@@ -401,6 +412,9 @@ const I18N = {
     "faq.q4": "Is the cosmetics tested on animals?",
     "faq.a4": "Never! We are categorically against animal testing (Cruelty-Free). All formulas are tested dermatologically in laboratory conditions and with volunteer focus groups.",
 
+    "catalog.soonEyebrow": "Coming soon",
+    "catalog.soonTitle": "New formulas on the way",
+    "catalog.soonText": "We're crafting new products and recipes. Something interesting goes on sale very soon — stay with us.",
     "catalog.title": "Catalog",
     "catalog.sub": "20–40 carefully selected products.",
     "filter.all": "All",
@@ -421,6 +435,10 @@ const I18N = {
     "pdp.usage": "How to use",
     "pdp.shelf": "Shelf life",
     "pdp.related": "Related products",
+    "pdp.notFound": "Product not found.",
+    "pdp.backToCatalog": "Back to catalogue",
+    "contacts.fillIn": "Please fill in all fields correctly.",
+    "contacts.mailHint": "Opening your mail app with the message ready.",
     "pdp.reviews": "reviews",
 
     "badge.new": "New",
@@ -447,6 +465,8 @@ const I18N = {
     "b.p1a": "Most products are overloaded with silicones, sulfates and synthetic fragrance. They give an instant effect but wear down the skin barrier over time.",
     "b.p1b": "For years the industry told you to add one more cream, one more serum. We suggest the opposite — remove the excess and keep only what works.",
     "b.p2k": "Philosophy",
+    "b.statement1": "Less,",
+    "b.statement2": "but purer.",
     "b.p2a": "Every formula is cold-pressed, with clean extracts and a full INCI on the label. No 'secret ingredients'.",
     "b.p2b": "We work in small batches so the actives stay fresh and the composition stays honest. Hypoallergenic and cruelty-free.",
     "b.p3k1": "Actives",
@@ -458,6 +478,8 @@ const I18N = {
     "b.p4k2": "Bestsellers",
     "b.p4lead": "Your ritual starts here.",
     "b.ctaEyebrow": "Botanical Care · Handmade",
+    "b.ctaLine1": "Your routine",
+    "b.ctaLine2": "starts here.",
     "b.ctaShop": "Shop the catalogue",
     "b.view": "View",
     "b.handmade": "Handmade Cosmetics",
@@ -528,18 +550,32 @@ const I18N = {
 };
 
 /* ---------- Language ---------- */
+/* Storage access can throw (blocked site data, private mode). Reads fall back to
+   a default and writes are ignored, so a storage error never stops the page. */
+function storeGet(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : value;
+  } catch (err) {
+    return fallback;
+  }
+}
+
+function storeSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (err) {
+    /* ignore: the page keeps working without persistence */
+  }
+}
+
 function getLang() {
-  return localStorage.getItem("sbc_lang") || "ua";
+  return storeGet("sbc_lang", "ua");
 }
 
 function setLang(lang) {
-  localStorage.setItem("sbc_lang", lang);
+  storeSet("sbc_lang", lang);
   applyLang(lang);
-  // The quiz card is rendered imperatively, so re-render it in the new language.
-  if (typeof renderQuizStep === "function" && document.getElementById("skin-quiz-card")) {
-    quizAnswers = {};
-    renderQuizStep(1);
-  }
   // Data-driven catalog + PDP bake text at render time, so re-render on switch.
   if (typeof renderCatalog === "function" && document.getElementById("catalog-grid")) {
     renderCatalog();
@@ -555,7 +591,8 @@ function setLang(lang) {
 
 function applyLang(lang) {
   const dict = I18N[lang] || I18N.ua;
-  document.documentElement.lang = lang;
+  // BCP 47 code for Ukrainian is "uk", not "ua".
+  document.documentElement.lang = lang === "ua" ? "uk" : "en";
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -574,7 +611,7 @@ function applyLang(lang) {
 
 /* ---------- Cart (mock) ---------- */
 function getCart() {
-  return parseInt(localStorage.getItem("sbc_cart") || "0", 10);
+  return parseInt(storeGet("sbc_cart", "0"), 10) || 0;
 }
 
 function updateCartBadge() {
@@ -583,7 +620,7 @@ function updateCartBadge() {
 }
 
 function addToCart() {
-  localStorage.setItem("sbc_cart", getCart() + 1);
+  storeSet("sbc_cart", getCart() + 1);
   updateCartBadge();
   toast(I18N[getLang()]["common.addedToCart"]);
 }
@@ -632,21 +669,21 @@ function initMenu() {
     document.body.appendChild(overlay);
   }
 
-  const close = () => {
-    menu.classList.remove("open");
-    burger.classList.remove("active");
-    overlay.classList.remove("open");
-    document.body.style.overflow = "";
+  // One place changes the state, so visuals, ARIA and focus stay in sync.
+  const setOpen = (open) => {
+    menu.classList.toggle("open", open);
+    burger.classList.toggle("active", open);
+    overlay.classList.toggle("open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    // A closed drawer must not be focusable or read by screen readers.
+    menu.inert = !open;
+    // Lock scroll while the drawer is open
+    document.body.style.overflow = open ? "hidden" : "";
   };
 
-  const toggle = () => {
-    const willOpen = !menu.classList.contains("open");
-    menu.classList.toggle("open", willOpen);
-    burger.classList.toggle("active", willOpen);
-    overlay.classList.toggle("open", willOpen);
-    // Lock scroll while the drawer is open
-    document.body.style.overflow = willOpen ? "hidden" : "";
-  };
+  const close = () => setOpen(false);
+  const toggle = () => setOpen(!menu.classList.contains("open"));
+  setOpen(false);
 
   burger.addEventListener("click", toggle);
   overlay.addEventListener("click", close);
@@ -659,98 +696,60 @@ function initMenu() {
   });
 }
 
+/* Bind `handler` to every element matching `selector` under `root`, but only
+   once per element. Re-rendered markup gets new nodes (and gets bound), while
+   nodes that already have a listener are skipped. This stops handlers from
+   stacking up when a page re-renders or init runs twice. */
+function bindOnce(selector, eventName, handler, root = document) {
+  root.querySelectorAll(selector).forEach((el) => {
+    if (el.dataset.boundTo === eventName) return;
+    el.dataset.boundTo = eventName;
+    el.addEventListener(eventName, (e) => handler(el, e));
+  });
+}
+
 /* ---------- Accordion ---------- */
 function initAccordion() {
-  document.querySelectorAll(".acc-head").forEach((head) => {
-    head.addEventListener("click", () => {
-      head.closest(".acc-item").classList.toggle("open");
-    });
+  bindOnce(".acc-head", "click", (head) => {
+    head.closest(".acc-item").classList.toggle("open");
   });
 }
 
 /* ---------- Quantity ---------- */
 function initQty() {
-  document.querySelectorAll(".qty").forEach((q) => {
-    const input = q.querySelector("input");
-    q.querySelector(".qminus").addEventListener("click", () => {
-      input.value = Math.max(1, parseInt(input.value, 10) - 1);
-    });
-    q.querySelector(".qplus").addEventListener("click", () => {
-      input.value = parseInt(input.value, 10) + 1;
-    });
+  bindOnce(".qty .qminus", "click", (btn) => {
+    const input = btn.closest(".qty").querySelector("input");
+    input.value = Math.max(1, parseInt(input.value, 10) - 1 || 1);
+  });
+  bindOnce(".qty .qplus", "click", (btn) => {
+    const input = btn.closest(".qty").querySelector("input");
+    input.value = (parseInt(input.value, 10) || 1) + 1;
   });
 }
 
 /* ---------- Variant / thumb toggles ---------- */
 function initToggles() {
-  document.querySelectorAll(".variant-opts").forEach((group) => {
-    group.querySelectorAll(".variant").forEach((v) =>
-      v.addEventListener("click", () => {
-        group.querySelectorAll(".variant").forEach((x) => x.classList.remove("active"));
-        v.classList.add("active");
-      })
-    );
+  bindOnce(".variant", "click", (v) => {
+    const group = v.closest(".variant-opts");
+    if (group) group.querySelectorAll(".variant").forEach((x) => x.classList.remove("active"));
+    v.classList.add("active");
   });
 
-  // Gallery thumbnail swap with a short cross-fade
-  const main = document.querySelector(".pdp-main");
-  document.querySelectorAll(".pdp-thumb").forEach((thumb) =>
-    thumb.addEventListener("click", () => {
-      document.querySelectorAll(".pdp-thumb").forEach((t) => t.classList.remove("active"));
-      thumb.classList.add("active");
-      const img = thumb.getAttribute("data-img");
-      if (main && img) {
-        main.classList.add("swapping");
-        setTimeout(() => {
-          main.style.backgroundImage = `url('${img}')`;
-          main.classList.remove("swapping");
-        }, 200);
-      }
-    })
-  );
-}
-
-/* ---------- Catalog filtering ---------- */
-function initFilters() {
-  // The data-driven catalog owns its own filter/sort via initCatalogControls.
-  if (document.getElementById("catalog-grid")) return;
-
-  const row = document.querySelector(".filters");
-  const grid = document.querySelector(".grid");
-  if (!row || !grid) return;
-
-  const chips = row.querySelectorAll(".chip");
-  const cards = grid.querySelectorAll(".card-wrap");
-
-  // Map a chip to the category label it filters by (read from the live DOM,
-  // so it works in both UA and EN after translation).
-  chips.forEach((chip) =>
-    chip.addEventListener("click", () => {
-      chips.forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-
-      const key = chip.getAttribute("data-i18n") || "";
-      const isAll = key === "filter.all";
-      const want = chip.textContent.trim().toLowerCase();
-
-      cards.forEach((card) => {
-        const catEl = card.querySelector(".card-cat");
-        const cat = catEl ? catEl.textContent.trim().toLowerCase() : "";
-        const show = isAll || cat === want;
-
-        if (show) {
-          card.classList.remove("filtering");
-          card.style.display = "";
-        } else {
-          card.classList.add("filtering");
-          // Hide after the fade-out finishes
-          setTimeout(() => {
-            if (card.classList.contains("filtering")) card.style.display = "none";
-          }, 300);
-        }
-      });
-    })
-  );
+  // Gallery thumbnail swap with a short cross-fade (main image is in the same gallery).
+  bindOnce(".pdp-thumb", "click", (thumb) => {
+    const gallery = thumb.closest(".pdp-gallery");
+    const main = gallery ? gallery.querySelector(".pdp-main") : null;
+    gallery.querySelectorAll(".pdp-thumb").forEach((t) => t.classList.remove("active"));
+    thumb.classList.add("active");
+    const img = thumb.getAttribute("data-img");
+    if (main && img) {
+      main.classList.add("swapping");
+      setTimeout(() => {
+        main.style.backgroundImage = `url('${img}')`;
+        main.classList.remove("swapping");
+      }, 200);
+    }
+  });
 }
 
 /* ---------- Scroll progress + header condense ---------- */
@@ -793,17 +792,34 @@ function initScrollFx() {
 
 /* ---------- Add-to-cart buttons ---------- */
 function initCartButtons() {
-  document.querySelectorAll("[data-add]").forEach((btn) =>
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      addToCart();
-    })
-  );
+  bindOnce("[data-add]", "click", (btn, e) => {
+    e.preventDefault();
+    addToCart();
+  });
 }
 
 /* ---------- Scroll reveal ---------- */
-function initReveal() {
-  const items = document.querySelectorAll(".reveal");
+/* Catalog cards reveal one after another (1st, 2nd, 3rd, ... across the whole
+   grid). The delay grows with each card's position in the DOM, so it respects
+   sort/filter order. Call after render and after any re-order. */
+function setCatalogRevealDelays() {
+  const grid = document.getElementById("catalog-grid");
+  if (!grid) return;
+  const step = 70;       // ms between consecutive cards (snappier)
+  const cap = 560;       // never wait longer than this, so lower cards aren't slow
+  const cards = Array.from(grid.querySelectorAll(".card-wrap"));
+  const visible = cards.filter((c) => c.style.display !== "none");
+  visible.forEach((card, i) => {
+    card.style.transitionDelay = `${Math.min(i * step, cap)}ms`;
+  });
+}
+
+/* One shared IntersectionObserver for the page. Calling initReveal again (after a
+   render or a language switch) only watches elements that are not revealed yet. */
+let revealObserver = null;
+
+function initReveal(root = document) {
+  const items = Array.from(root.querySelectorAll(".reveal:not(.in)"));
   if (!items.length) return;
 
   const reveal = (el) => el.classList.add("in");
@@ -814,7 +830,7 @@ function initReveal() {
     return;
   }
 
-  const io = new IntersectionObserver(
+  const io = revealObserver || (revealObserver = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -823,8 +839,10 @@ function initReveal() {
         }
       });
     },
-    { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
-  );
+    // Reveal early: start before the element reaches the viewport (big positive
+    // bottom margin) so cards fade in ahead of the scroll — no empty gap.
+    { threshold: 0, rootMargin: "0px 0px 25% 0px" }
+  ));
 
   items.forEach((el) => io.observe(el));
 
@@ -838,101 +856,39 @@ function initReveal() {
   }, 2500);
 }
 
+/* ---------- Contact form ----------
+   There is no backend yet. A valid submit opens the visitor's mail app with the
+   message filled in. The page never claims a message was sent. */
+function initContactForm() {
+  bindOnce(".contacts-form", "submit", (form, e) => {
+    e.preventDefault();
+    const dict = I18N[getLang()] || I18N.ua;
+    const status = form.querySelector(".form-status");
+    const nameEl = form.querySelector('[name="name"]');
+    const emailEl = form.querySelector('[name="email"]');
+    const msgEl = form.querySelector('[name="message"]');
+    const name = nameEl.value.trim();
+    const email = emailEl.value.trim();
+    const message = msgEl.value.trim();
+
+    if (!name || !message || !emailEl.checkValidity()) {
+      if (status) status.textContent = dict["contacts.fillIn"];
+      return;
+    }
+
+    const subject = encodeURIComponent(`Sophie Bilynska — ${name}`);
+    const body = encodeURIComponent(`${message}\n\n${name}\n${email}`);
+    if (status) status.textContent = dict["contacts.mailHint"];
+    window.location.href = `mailto:hello@sbcosmetics.com?subject=${subject}&body=${body}`;
+  });
+}
+
 /* ---------- FAQ accordion ---------- */
 function initFaq() {
   document.querySelectorAll(".faq-head").forEach((head) => {
     head.addEventListener("click", () => {
       head.closest(".faq-item").classList.toggle("open");
     });
-  });
-}
-
-/* ---------- 60-Second Skin Advisor Quiz ----------
-   Self-contained: maps 3 answers to one of three care rituals and
-   links to the catalog. No product/cart data required. */
-const QUIZ_RITUALS = {
-  radiance: { nameKey: "quiz.ritualRadiance", link: "catalog.html" },
-  repair: { nameKey: "quiz.ritualRepair", link: "catalog.html" },
-  clean: { nameKey: "quiz.ritualClean", link: "catalog.html" }
-};
-let quizAnswers = {};
-
-function initQuiz() {
-  const card = document.getElementById("skin-quiz-card");
-  if (!card) return;
-  quizAnswers = {};
-  renderQuizStep(1);
-}
-
-function renderQuizStep(step) {
-  const card = document.getElementById("skin-quiz-card");
-  if (!card) return;
-  const dict = I18N[getLang()] || I18N.ua;
-
-  const dots = (active) =>
-    `<div class="quiz-progress">${[1, 2, 3]
-      .map((i) => `<div class="quiz-step-dot${i <= active ? " active" : ""}"></div>`)
-      .join("")}</div>`;
-
-  const opt = (key, val, next, icon, titleKey, subKey) =>
-    `<button class="quiz-opt-btn" type="button" data-key="${key}" data-val="${val}" data-next="${next}">
-       <strong>${icon} ${dict[titleKey]}</strong>
-       <p>${dict[subKey]}</p>
-     </button>`;
-
-  if (step === 1) {
-    card.innerHTML = `
-      ${dots(1)}
-      <h3 class="quiz-question">${dict["quiz.q1"]}</h3>
-      <div class="quiz-options-grid">
-        ${opt("type", "dry", 2, "💧", "quiz.q1o1", "quiz.q1o1sub")}
-        ${opt("type", "combo", 2, "⚖", "quiz.q1o2", "quiz.q1o2sub")}
-        ${opt("type", "sensitive", 2, "🤍", "quiz.q1o3", "quiz.q1o3sub")}
-      </div>`;
-  } else if (step === 2) {
-    card.innerHTML = `
-      ${dots(2)}
-      <h3 class="quiz-question">${dict["quiz.q2"]}</h3>
-      <div class="quiz-options-grid">
-        ${opt("goal", "radiance", 3, "✨", "quiz.q2o1", "quiz.q2o1sub")}
-        ${opt("goal", "repair", 3, "🛡", "quiz.q2o2", "quiz.q2o2sub")}
-        ${opt("goal", "clean", 3, "🌿", "quiz.q2o3", "quiz.q2o3sub")}
-      </div>`;
-  } else if (step === 3) {
-    card.innerHTML = `
-      ${dots(3)}
-      <h3 class="quiz-question">${dict["quiz.q3"]}</h3>
-      <div class="quiz-options-grid">
-        ${opt("texture", "fluid", 4, "🍃", "quiz.q3o1", "quiz.q3o1sub")}
-        ${opt("texture", "rich", 4, "🍯", "quiz.q3o2", "quiz.q3o2sub")}
-      </div>`;
-  } else {
-    // Result: the care goal decides the ritual.
-    const ritual = QUIZ_RITUALS[quizAnswers.goal] || QUIZ_RITUALS.radiance;
-    card.innerHTML = `
-      <div class="quiz-results-box">
-        <span class="eyebrow quiz-result-eyebrow">${dict["quiz.resEyebrow"]}</span>
-        <h3 class="quiz-question" style="margin-bottom:4px">${dict["quiz.resTitle"]}</h3>
-        <p class="quiz-ritual-name">${dict[ritual.nameKey]}</p>
-        <p class="quiz-result-text">${dict["quiz.resSub"]}</p>
-        <div class="quiz-result-actions">
-          <a href="${ritual.link}" class="btn btn-fill">${dict["quiz.resCta"]}</a>
-          <button class="quiz-restart" type="button" data-next="1">${dict["quiz.restart"]}</button>
-        </div>
-      </div>`;
-  }
-
-  // Wire the freshly rendered controls.
-  card.querySelectorAll(".quiz-opt-btn").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      quizAnswers[btn.dataset.key] = btn.dataset.val;
-      renderQuizStep(parseInt(btn.dataset.next, 10));
-    })
-  );
-  const restart = card.querySelector(".quiz-restart");
-  if (restart) restart.addEventListener("click", () => {
-    quizAnswers = {};
-    renderQuizStep(1);
   });
 }
 
@@ -965,7 +921,7 @@ function productCard(p, i, lang, dict) {
     : "";
   const rating = `<span class="card-rating"><span class="stars" aria-hidden="true">★</span>${p.rating} <span class="card-rating-count">(${p.reviews})</span></span>`;
   return `
-    <div class="card-wrap reveal"${i % 4 ? ` data-delay="${i % 4}"` : ""} data-category="${escapeHtml(p.category)}" data-price="${p.price}" data-rating="${p.rating}">
+    <div class="card-wrap reveal" data-category="${escapeHtml(p.category)}" data-price="${p.price}" data-rating="${p.rating}">
       ${badge}
       <a href="product.html?id=${encodeURIComponent(p.id)}" class="card">
         <div class="card-media-wrap"><div class="card-media" style="background-image:url('${escapeHtml(p.image)}')"></div></div>
@@ -985,7 +941,22 @@ function renderCatalog() {
   if (!grid || typeof SBC_PRODUCTS === "undefined") return;
   const lang = getLang();
   const dict = I18N[lang] || I18N.ua;
-  grid.innerHTML = SBC_PRODUCTS.map((p, i) => productCard(p, i, lang, dict)).join("");
+  const cards = SBC_PRODUCTS.map((p, i) => productCard(p, i, lang, dict)).join("");
+  // 12th tile: a "coming soon" placeholder so the 3-column grid stays full.
+  const soon = `
+    <div class="card-wrap reveal card-soon" data-soon="1" data-rating="-1">
+      <div class="card card-soon-inner">
+        <div class="card-soon-top">
+          <span class="card-soon-eyebrow">${escapeHtml(dict["catalog.soonEyebrow"])}</span>
+          <span class="card-soon-title">${escapeHtml(dict["catalog.soonTitle"])}</span>
+        </div>
+        <div class="card-soon-bottom">
+          <p class="card-soon-text">${escapeHtml(dict["catalog.soonText"])}</p>
+        </div>
+      </div>
+    </div>`;
+  grid.innerHTML = cards + soon;
+  setCatalogRevealDelays();
   initReveal();
 }
 
@@ -1034,43 +1005,37 @@ function initCatalogControls() {
   const grid = document.getElementById("catalog-grid");
   if (!grid) return;
 
-  const chips = document.querySelectorAll(".filters .chip");
-  const select = document.querySelector(".toolbar .select");
-
   const apply = () => {
-    // Filter by active chip (map chip i18n key -> category).
+    // Active chip's i18n key (cat.* keys on the chips) -> category value on cards.
     const activeChip = document.querySelector(".filters .chip.active");
     const key = activeChip ? activeChip.getAttribute("data-i18n") : "filter.all";
-    const catMap = { "filter.face": "face", "filter.body": "body", "filter.hair": "hair" };
+    const catMap = { "cat.face": "face", "cat.body": "body", "cat.hair": "hair" };
     const wantCat = catMap[key] || null;
 
-    let cards = Array.from(grid.querySelectorAll(".card-wrap"));
+    const cards = Array.from(grid.querySelectorAll(".card-wrap"));
     cards.forEach((card) => {
       const show = !wantCat || card.getAttribute("data-category") === wantCat;
       card.style.display = show ? "" : "none";
     });
 
-    // Sort visible cards.
-    const sortIdx = select ? select.selectedIndex : 0;
+    // Visible cards ordered by rating, highest first (the default "popular" order).
+    // The coming-soon tile has rating -1, so it always ends up last.
     const visible = cards.filter((c) => c.style.display !== "none");
-    visible.sort((a, b) => {
-      const pa = parseFloat(a.dataset.price), pb = parseFloat(b.dataset.price);
-      const ra = parseFloat(a.dataset.rating), rb = parseFloat(b.dataset.rating);
-      if (sortIdx === 1) return pa - pb;        // price asc
-      if (sortIdx === 2) return pb - pa;        // price desc
-      return rb - ra;                            // popularity ~ rating
-    });
+    visible.sort((a, b) => parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating));
     visible.forEach((c) => grid.appendChild(c));
+    // Re-stagger in the new visual order.
+    setCatalogRevealDelays();
   };
 
-  chips.forEach((chip) =>
-    chip.addEventListener("click", () => {
-      chips.forEach((c) => c.classList.remove("active"));
-      chip.classList.add("active");
-      apply();
-    })
-  );
-  if (select) select.addEventListener("change", apply);
+  // Keep the latest apply() reachable for the chip handler, and bind chips once.
+  // A language switch re-renders the cards, but the chips are static and keep
+  // their single listener.
+  grid.sbcApply = apply;
+  bindOnce(".filters .chip", "click", (chip) => {
+    document.querySelectorAll(".filters .chip").forEach((c) => c.classList.remove("active"));
+    chip.classList.add("active");
+    grid.sbcApply();
+  });
   apply();
 }
 
@@ -1082,7 +1047,15 @@ function renderPDP() {
   const lang = getLang();
   const dict = I18N[lang] || I18N.ua;
   const id = new URLSearchParams(location.search).get("id");
-  const product = getProductById(id) || SBC_PRODUCTS[0];
+  // No id: show the first product. Unknown id: say so, instead of silently showing another product.
+  const product = id ? getProductById(id) : SBC_PRODUCTS[0];
+  if (!product) {
+    root.innerHTML = `<div class="pdp-empty">
+      <p>${escapeHtml(dict["pdp.notFound"])}</p>
+      <a class="btn" href="catalog.html">${escapeHtml(dict["pdp.backToCatalog"])}</a>
+    </div>`;
+    return;
+  }
 
   const name = product.name[lang] || product.name.ua;
   const cat = categoryLabel(product.category, dict);
@@ -1091,7 +1064,7 @@ function renderPDP() {
   const usage = product.usage[lang] || product.usage.ua;
   const variantLabel = dict[product.variants.labelKey] || dict["pdp.size"];
   const variantOpts = product.variants.options
-    .map((o, i) => `<button class="variant${i === 0 ? " active" : ""}">${escapeHtml(o[lang] || o.ua)}</button>`)
+    .map((o, i) => `<button type="button" class="variant${i === 0 ? " active" : ""}">${escapeHtml(o[lang] || o.ua)}</button>`)
     .join("");
   const actives = (product.actives && (product.actives[lang] || product.actives.ua)) || [];
   const activeChips = actives.length
@@ -1110,7 +1083,7 @@ function renderPDP() {
       <div class="pdp-gallery reveal">
         <div class="pdp-main" style="background-image:url('${escapeHtml(gallery[0])}')"></div>
         <div class="pdp-thumbs">
-          ${gallery.map((g, i) => `<button class="pdp-thumb${i === 0 ? " active" : ""}" data-img="${escapeHtml(g)}" style="background-image:url('${escapeHtml(g)}')"></button>`).join("")}
+          ${gallery.map((g, i) => `<button type="button" class="pdp-thumb${i === 0 ? " active" : ""}" data-img="${escapeHtml(g)}" style="background-image:url('${escapeHtml(g)}')"></button>`).join("")}
         </div>
       </div>
 
@@ -1131,16 +1104,16 @@ function renderPDP() {
 
         <div class="pdp-actions">
           <div class="qty">
-            <button class="qminus" aria-label="minus">−</button>
+            <button type="button" class="qminus" aria-label="minus">−</button>
             <input type="text" value="1" inputmode="numeric" aria-label="quantity" />
-            <button class="qplus" aria-label="plus">+</button>
+            <button type="button" class="qplus" aria-label="plus">+</button>
           </div>
-          <button class="btn btn-fill btn-block" data-add>${escapeHtml(dict["pdp.add"])}</button>
+          <button type="button" class="btn btn-fill btn-block" data-add>${escapeHtml(dict["pdp.add"])}</button>
         </div>
 
         <div class="accordion">
           <div class="acc-item open">
-            <button class="acc-head"><span>${escapeHtml(dict["pdp.benefits"])}</span><span>+</span></button>
+            <button type="button" class="acc-head"><span>${escapeHtml(dict["pdp.benefits"])}</span><span>+</span></button>
             <div class="acc-body">
               <ul style="list-style:disc;padding-left:18px;display:flex;flex-direction:column;gap:6px">
                 ${benefits.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}
@@ -1148,11 +1121,11 @@ function renderPDP() {
             </div>
           </div>
           <div class="acc-item">
-            <button class="acc-head"><span>${escapeHtml(dict["pdp.inci"])}</span><span>+</span></button>
+            <button type="button" class="acc-head"><span>${escapeHtml(dict["pdp.inci"])}</span><span>+</span></button>
             <div class="acc-body"><p>${escapeHtml(product.inci)}</p></div>
           </div>
           <div class="acc-item">
-            <button class="acc-head"><span>${escapeHtml(dict["pdp.usage"])}</span><span>+</span></button>
+            <button type="button" class="acc-head"><span>${escapeHtml(dict["pdp.usage"])}</span><span>+</span></button>
             <div class="acc-body"><p>${escapeHtml(usage)}</p></div>
           </div>
         </div>
@@ -1182,28 +1155,37 @@ function renderPDP() {
 }
 
 /* ---------- Init ---------- */
+/* Run one init step. A failure in one step is logged and does not stop the
+   others, so content (e.g. scroll-revealed cards) is never left hidden. */
+function safe(name, fn) {
+  try {
+    fn();
+  } catch (err) {
+    console.error(`[sbc] ${name} failed:`, err);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  applyLang(getLang());
-  updateCartBadge();
+  safe("lang", () => applyLang(getLang()));
+  safe("cart", updateCartBadge);
 
   // Data-driven pages render first, then shared behaviours bind.
-  renderCatalog();
-  initCatalogControls();
-  renderHomeBestsellers();
-  renderPDP();
+  safe("catalog", renderCatalog);
+  safe("catalogControls", initCatalogControls);
+  safe("bestsellers", renderHomeBestsellers);
+  safe("pdp", renderPDP);
 
-  document.querySelectorAll(".lang button").forEach((b) =>
-    b.addEventListener("click", () => setLang(b.dataset.lang))
+  safe("langSwitch", () =>
+    bindOnce(".lang button", "click", (b) => setLang(b.dataset.lang))
   );
 
-  initMenu();
-  initAccordion();
-  initFaq();
-  initQuiz();
-  initQty();
-  initToggles();
-  initFilters();
-  initCartButtons();
-  initReveal();
-  initScrollFx();
+  safe("menu", initMenu);
+  safe("accordion", initAccordion);
+  safe("faq", initFaq);
+  safe("contactForm", initContactForm);
+  safe("qty", initQty);
+  safe("toggles", initToggles);
+  safe("cartButtons", initCartButtons);
+  safe("reveal", () => initReveal());
+  safe("scrollFx", initScrollFx);
 });

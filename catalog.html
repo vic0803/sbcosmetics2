@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  <!-- Mark JS as active before first paint so reveal styles only hide content when JS can show it. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="icon" type="image/png" href="assets/logo/monogram.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Каталог — Sophie Bilynska Cosmetics</title>
   <meta name="description" content="Каталог преміальної косметики Sophie Bilynska." />  <link rel="stylesheet" href="css/style.css" />
@@ -13,10 +16,10 @@
       <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
       <div class="header-right">
         <div class="lang">
-          <button data-lang="ua">UA</button>
-          <button data-lang="en">EN</button>
+          <button type="button" data-lang="ua">UA</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
-        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button type="button" class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -24,7 +27,7 @@
   <!-- Flyout menu -->
   <div class="menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Main menu">
-    <button class="menu-close" aria-label="Close">&times;</button>
+    <button type="button" class="menu-close" aria-label="Close">&times;</button>
     <div class="menu-links">
       <a href="brand.html" data-i18n="nav.about">Бренд</a>
       <div class="menu-group">
@@ -41,30 +44,30 @@
     </div>
   </nav>
 
-  <!-- Catalog header -->
-  <section class="b-sec b-catalog-head" style="border-top:0;padding-top:clamp(120px,18vh,220px)">
-    <div class="b-kicker reveal"><span data-i18n="b.p4k1">Колекція</span></div>
-    <h1 class="b-lead reveal" data-delay="1" data-i18n="catalog.title">Каталог</h1>
-    <p class="b-col reveal" data-delay="2" data-i18n="catalog.sub">Ретельно підібрані засоби для обличчя, тіла та волосся.</p>
+  <!-- Catalog: everything lives inside one width-capped, centred container so
+       filters, divider and the card grid share the same left/right edges. -->
+  <div class="catalog-container">
+    <!-- Catalog header -->
+    <section class="b-sec b-catalog-head" style="border-top:0;padding-top:clamp(60px,9vh,110px);padding-bottom:0">
+      <h1 class="b-cat-title">
+        <span class="b-cat-collection" data-i18n="b.p4k1">Колекція</span>
+        <span class="b-cat-main" data-i18n="catalog.title">Каталог</span>
+      </h1>
 
-    <div class="b-toolbar reveal" data-delay="2">
-      <div class="filters b-filters">
-        <button class="chip active" data-i18n="filter.all">Усі</button>
-        <button class="chip" data-i18n="cat.face">Обличчя</button>
-        <button class="chip" data-i18n="cat.body">Тіло</button>
-        <button class="chip" data-i18n="cat.hair">Волосся</button>
+      <div class="b-toolbar reveal" data-delay="1">
+        <div class="filters b-filters">
+          <button type="button" class="chip active" data-i18n="filter.all">Усі</button>
+          <button type="button" class="chip" data-i18n="cat.face">Обличчя</button>
+          <button type="button" class="chip" data-i18n="cat.body">Тіло</button>
+          <button type="button" class="chip" data-i18n="cat.hair">Волосся</button>
+        </div>
       </div>
-      <select class="select b-select">
-        <option data-i18n="sort.popular">За популярністю</option>
-        <option data-i18n="sort.priceAsc">Ціна: за зростанням</option>
-        <option data-i18n="sort.priceDesc">Ціна: за спаданням</option>
-      </select>
-    </div>
-  </section>
+    </section>
 
-  <section class="b-sec" style="border-top:0;padding-top:0">
-    <div class="grid b-catalog-grid" id="catalog-grid"></div>
-  </section>
+    <section class="b-sec" style="border-top:0;padding-top:clamp(16px,2.5vw,26px)">
+      <div class="grid b-catalog-grid" id="catalog-grid"></div>
+    </section>
+  </div>
 
   <footer class="footer">
     <div class="footer-bottom">
