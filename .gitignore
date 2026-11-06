@@ -1,8 +1,6 @@
 .DS_Store
 
-# Licensed fonts — do NOT publish to public repo (local use only).
-# The public site uses the Jost web font as a visually-close fallback.
-assets/fonts/
+# assets/fonts/ is published: it holds Jost under the SIL OFL (see Jost-OFL.txt).
 
 # Kiro / MCP — never commit (may contain API tokens/secrets)
 .kiro/settings/mcp.json
@@ -16,7 +14,7 @@ assets/fonts/
 # Local preview screenshots (Playwright captures)
 .preview/
 
-# Node dependencies — three.js is vendored into js/vendor/ instead.
+# Node dependencies (the site itself does not use them).
 node_modules/
 
 # Temporary CDP/headless capture files

@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  <!-- Mark JS as active before first paint so reveal styles only hide content when JS can show it. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="icon" type="image/png" href="assets/logo/monogram.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sophie Bilynska — Botanical Skincare</title>
   <meta name="description" content="Преміальна ботанічна косметика ручної роботи. Чисті екстракти, прозорий склад, догляд малими партіями." />  <link rel="stylesheet" href="css/style.css" />
@@ -14,10 +17,10 @@
       <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
       <div class="header-right">
         <div class="lang">
-          <button data-lang="ua">UA</button>
-          <button data-lang="en">EN</button>
+          <button type="button" data-lang="ua">UA</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
-        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button type="button" class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -25,7 +28,7 @@
   <!-- Flyout menu -->
   <div class="menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Main menu">
-    <button class="menu-close" aria-label="Close">&times;</button>
+    <button type="button" class="menu-close" aria-label="Close">&times;</button>
     <div class="menu-links">
       <a href="brand.html" data-i18n="nav.about">Бренд</a>
       <div class="menu-group">
@@ -53,7 +56,7 @@
         <span class="i-haze" style="--i:3" data-i18n="b.heroTitle2">догляду</span>
       </h1>
       <!-- Typewriter lines now sit UNDER the big headline, lower-left. -->
-      <div class="b-hero-aside" aria-hidden="true">
+      <div class="b-hero-aside">
         <p class="b-type" data-type data-i18n="b.heroSub">Чисті рослинні активи. Прозорий склад. Малі свіжі партії.</p>
         <p class="b-type b-type--muted" data-type data-i18n="b.heroNote">Ваша шкіра не потребує більше засобів. Вона потребує чистіших формул.</p>
       </div>
@@ -62,7 +65,7 @@
     <!-- Right: full-height product video (serum bottle + dragonfly). -->
     <div class="b-hero-video i-haze" style="--i:0">
       <video class="b-hero-bloom" aria-hidden="true"
-             autoplay muted loop playsinline preload="auto"
+             autoplay muted loop playsinline preload="metadata"
              poster="assets/hero/ice-bloom-poster.jpg">
         <source src="assets/hero/ice-bloom.mp4" type="video/mp4" />
       </video>
@@ -88,7 +91,7 @@
   <!-- ============ STATEMENT (dark) ============ -->
   <section class="b-sec b-sec--dark">
     <p class="b-kicker reveal" style="color:#ffffff99"><span data-i18n="b.p2k">Філософія</span></p>
-    <h2 class="b-statement reveal" data-delay="1">Less,<br>but purer.</h2>
+    <h2 class="b-statement reveal" data-delay="1"><span data-i18n="b.statement1">Менше,</span><br><span class="b-statement-accent" data-i18n="b.statement2">та чистіше.</span></h2>
     <div class="b-grid2 offset reveal" data-delay="2" style="margin-top:clamp(40px,8vw,90px)">
       <p class="b-col" data-i18n="b.p2a">Кожна формула — це холодне пресування, чисті екстракти та повний INCI на етикетці. Жодних «секретних компонентів».</p>
       <p class="b-col" data-i18n="b.p2b">Ми працюємо малими партіями, щоб активи залишались свіжими, а склад — чесним. Гіпоалергенно та cruelty-free.</p>
@@ -188,7 +191,7 @@
   <!-- ============ FINAL CTA ============ -->
   <section class="b-final">
     <p class="b-eyebrow" style="color:#ffffff99" data-i18n="b.ctaEyebrow">Ботанічний догляд · Ручна робота</p>
-    <h2 class="b-cta-title">Your routine<br>starts here.</h2>
+    <h2 class="b-cta-title"><span data-i18n="b.ctaLine1">Твій ритуал</span><br><span data-i18n="b.ctaLine2">починається тут.</span></h2>
     <a href="catalog.html" class="b-link" data-i18n="b.ctaShop">Переглянути каталог</a>
   </section>
 

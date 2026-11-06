@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="ua">
+<html lang="uk">
 <head>
   <meta charset="UTF-8" />
+  <!-- Mark JS as active before first paint so reveal styles only hide content when JS can show it. -->
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="icon" type="image/png" href="assets/logo/monogram.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Контакти та доставка — Sophie Bilynska Cosmetics</title>
   <meta name="description" content="Зв'яжіться з Sophie Bilynska Cosmetics. Умови доставки та оплати, відповіді на поширені питання." />  <link rel="stylesheet" href="css/style.css" />
@@ -13,10 +16,10 @@
       <a href="index.html" class="logo b-logo" aria-label="Sophie Bilynska"><span class="b-logo-text">Sophie Bilynska</span></a>
       <div class="header-right">
         <div class="lang">
-          <button data-lang="ua">UA</button>
-          <button data-lang="en">EN</button>
+          <button type="button" data-lang="ua">UA</button>
+          <button type="button" data-lang="en">EN</button>
         </div>
-        <button class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+        <button type="button" class="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
@@ -24,7 +27,7 @@
   <!-- Flyout menu -->
   <div class="menu-overlay"></div>
   <nav class="mobile-menu" aria-label="Main menu">
-    <button class="menu-close" aria-label="Close">&times;</button>
+    <button type="button" class="menu-close" aria-label="Close">&times;</button>
     <div class="menu-links">
       <a href="brand.html" data-i18n="nav.about">Бренд</a>
       <div class="menu-group">
@@ -64,19 +67,23 @@
           </ul>
         </div>
 
-        <form class="contacts-form reveal" data-delay="1" onsubmit="return false">
+        <form class="contacts-form reveal" data-delay="1" novalidate>
           <h2 data-i18n="contacts.formTitle">Написати нам</h2>
-          <input class="field" type="text" data-i18n-ph="contacts.fName" placeholder="Ваше ім'я" />
-          <input class="field" type="email" data-i18n-ph="contacts.fEmail" placeholder="Email" />
-          <textarea class="field" rows="4" data-i18n-ph="contacts.fMsg" placeholder="Повідомлення"></textarea>
+          <label class="sr-only" for="cf-name" data-i18n="contacts.fName">Ваше ім'я</label>
+          <input id="cf-name" class="field" type="text" name="name" autocomplete="name" required data-i18n-ph="contacts.fName" placeholder="Ваше ім'я" />
+          <label class="sr-only" for="cf-email" data-i18n="contacts.fEmail">Email</label>
+          <input id="cf-email" class="field" type="email" name="email" autocomplete="email" required data-i18n-ph="contacts.fEmail" placeholder="Email" />
+          <label class="sr-only" for="cf-msg" data-i18n="contacts.fMsg">Повідомлення</label>
+          <textarea id="cf-msg" class="field" name="message" rows="4" required data-i18n-ph="contacts.fMsg" placeholder="Повідомлення"></textarea>
           <button class="btn btn-fill btn-block" type="submit" data-i18n="contacts.fSend">Надіслати</button>
+          <p class="form-status" role="status" aria-live="polite"></p>
         </form>
       </div>
     </div>
   </section>
 
   <!-- Delivery section -->
-  <section class="section" id="delivery" style="background:var(--black-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <section class="section" id="delivery" style="border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
     <div class="container">
       <p class="eyebrow" style="text-align:center" data-i18n="delivery.kicker">Доставка та оплата</p>
       <h2 class="section-title" data-i18n="delivery.title">Доставка</h2>

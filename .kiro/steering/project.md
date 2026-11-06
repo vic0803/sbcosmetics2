@@ -21,14 +21,13 @@ A static marketing + storefront site for a handcrafted cosmetics brand (Sophie B
 - `css/style.css` — main stylesheet (tokens, components, all sections).
 - `css/xhero.css` — styles for the homepage canvas hero only.
 - `js/app.js` — i18n, mobile menu, accordion (`.acc-item`/`.acc-head` and `.faq-item`/`.faq-head`), mock cart badge, scroll reveal, catalog filters, the skin quiz controller.
-- `js/xhero.js` — homepage hero image-sequence animation.
 - `js/data.js` — single source of truth for products (if present / once added).
-- `assets/products/*` — product imagery. `assets/logo`, `assets/brand`, `assets/sequence` (hero frames), `assets/fonts` (Futura PT).
+- `assets/products/*` — product imagery. `assets/logo`, `assets/brand`, `assets/fonts` (Jost, OFL).
 
 ## Known state / gotchas
 - The cart is a MOCK: `addToCart()` just increments `localStorage.sbc_cart`. There is no real cart, no checkout.
 - `product.html` was originally static (one hardcoded soap). Moving to dynamic `product.html?id=<id>` rendering from `js/data.js`.
-- Fonts: the project references Futura PT in `assets/fonts` via `--font-display`, with Jost (Google Fonts) as fallback.
+- Fonts: the brand font is Jost (SIL OFL) in `assets/fonts`, referenced via `--font-display` and `--font-b`. Futura PT was removed (licensed, kept outside the project).
 - This is `sbcosmetics2`, the ACTIVE working copy. The sibling project `/Volumes/Mac D/Kiro/projects/sbcosmetics` is the stable base/backup — do not break it; new work (new images, ideas) happens here.
 - A friend's more feature-complete fork exists OUTSIDE this workspace at `/Volumes/Mac D/sb/sb.cosmetic/sbcosmetics_v2` (real cart/checkout/data.js). Reference only — do not edit it, not part of this repo.
 
